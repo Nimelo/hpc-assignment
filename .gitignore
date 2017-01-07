@@ -12,3 +12,6 @@
 *.toc
 *.xdy
 *.lol
+*.vcxproj
+*.vcxproj.filters
+*.db
