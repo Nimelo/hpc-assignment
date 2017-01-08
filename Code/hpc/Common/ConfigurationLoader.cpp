@@ -14,7 +14,6 @@ ConfigurationLoader::ConfigurationLoader()
 	TAG_LOWER_BOUND = "lowerBound";
 	TAG_UPPER_BOUND = "upperBound";
 	TAG_ACCELERATION = "acceleration";
-	TAG_ANALYTICAL_FUNCTION = "analyticalFunction";
 	TAG_SCHEMA = "schema";
 	TAG_TIME_LEVELS = "timeLevels";
 	TAG_GRID_SIZE = "gridSize";

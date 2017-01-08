@@ -8,7 +8,7 @@ void CrankNicolsonSchema::checkStabilityCondition()
 std::vector<double>* CrankNicolsonSchema::apply(std::vector<double>* previousWave)
 {
 	//TODO
-	return nullptr;
+	return new std::vector<double>();
 }
 
 CrankNicolsonSchema::CrankNicolsonSchema(double a, double dx, double dt)
@@ -18,5 +18,5 @@ CrankNicolsonSchema::CrankNicolsonSchema(double a, double dx, double dt)
 
 std::vector<double>* CrankNicolsonSchema::postApplyAction(std::vector<double>* previousWave, double t)
 {
-	return nullptr;
+	return new std::vector<double>();
 }

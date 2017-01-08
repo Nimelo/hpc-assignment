@@ -4,6 +4,7 @@
  */
 
 #include "UpwindImplicitSchema.h"
+#include <cmath>
 
 void UpwindImplicitSchema::checkStabilityCondition()
 {
@@ -49,7 +50,7 @@ std::vector<double>* UpwindImplicitSchema::postApplyAction(std::vector<double>* 
 	double coefficient = (this->accelertaion * this->deltaT) / this->deltaX;
 	if (coefficient < 0)
 	{
-		unsigned int offset = ceil(2 * (1.0 / this->deltaX) * -1 * this->accelertaion * t);
+		unsigned int offset = std::ceil(2 * (1.0 / this->deltaX) * -1 * this->accelertaion * t);
 
 		for (unsigned int i = 0; i < offset; i++)
 		{
