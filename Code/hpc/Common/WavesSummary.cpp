@@ -20,19 +20,18 @@ std::ostream & operator<<(std::ostream & os, const WavesSummary & ws)
 	os << std::endl;
 
 	double point = ws.lowerBound;
-	unsigned int counter = 0;
+	unsigned int size = ws[0]->analytical->size();
 
-	while(point < ws.upperBound)
+	for (unsigned int i = 0; i < size; i++)
 	{
 		os << point << separator;
 		for (WavesSummary::const_iterator it = ws.begin(); it != ws.end(); ++it)
 		{
-			os << (*it)->numerical->at(counter) << separator;
-			os << (*it)->analytical->at(counter) << separator;
+			os << (*it)->numerical->at(i) << separator;
+			os << (*it)->analytical->at(i) << separator;
 		}
-		
+
 		os << std::endl;
-		++counter;
 		point += ws.deltaX;
 	}
 

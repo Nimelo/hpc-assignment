@@ -51,8 +51,9 @@ std::vector<double> * CrankNicolsonSchema::ThomasAlgorithm_per(unsigned int N, d
 	delete[] x1;
 	delete[] x2;
 	delete[] q2;
-
-	return new std::vector<double>(x, x + N);
+	std::vector<double> * result = new std::vector<double>(x, x + N);
+	delete[] x;
+	return result;
 }
 
 void CrankNicolsonSchema::ThomasAlgorithm(int N, double b, double a, double c, double *x, double *q) {
