@@ -10,8 +10,6 @@
 #include <stdexcept>
 #include <vector>
 
-#include "SchemasEnum.h"
-
 /**
  * @brief ConfigurationParameter provides bunch of methods used to reinterprate string to other types.
  * It is used in order to cast generic string value of parameter to more complex types.

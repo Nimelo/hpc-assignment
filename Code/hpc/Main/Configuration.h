@@ -8,7 +8,6 @@
 #include <vector>
 #include <string>
 
-#include "SchemasEnum.h"
 
 /**
  * @brief Stores information about all parameters used during discretization process, such as types and numeric values.

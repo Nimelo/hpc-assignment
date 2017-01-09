@@ -6,7 +6,6 @@
 #ifndef __H_DEFAULT_SCHEMAS_RESOLVER
 #define __H_DEFAULT_SCHEMAS_RESOLVER
 
-#include "SchemasEnum.h"
 #include "AbstractSchema.h"
 
 #include "UpwindExplicitSchema.h"

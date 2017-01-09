@@ -5,7 +5,6 @@
 #include "ConfigurationLoader.h"
 #include "ConfigurationLoadingException.h"
 #include "Configuration.h"
-#include "SchemasEnum.h"
 
 #include <fstream>
 

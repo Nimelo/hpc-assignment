@@ -1,3 +1,4 @@
+/*
 #include <mpi.h>
 #include <cmath>
 #include <vector>
@@ -145,3 +146,4 @@ double getLowerBound(int coreId, int coresQuantity)
 		return a;
 	}
 }
+*/
