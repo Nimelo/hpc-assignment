@@ -6,6 +6,8 @@
 #define __H_CONFIGURATION
 
 #include <vector>
+#include <string>
+
 #include "SchemasEnum.h"
 
 /**
@@ -33,7 +35,7 @@ struct Configuration
 	 * Schema enumerator that is used in disretization process.
 	 * @see SchemasEnum
 	 */
-	SchemasEnum schema;
+	std::string schema;
 
 	/**
 	 * Mesh size (grid size).
@@ -60,7 +62,7 @@ struct Configuration
 	* @param timeLevels Time levels.
 	* @param cfl CFL number.
 	*/
-	Configuration(double lowerBound, double upperBound, double acceleration, SchemasEnum schema, unsigned int numberOfPoints,
+	Configuration(double lowerBound, double upperBound, double acceleration, std::string schema, unsigned int numberOfPoints,
 		std::vector<double> timeLevels, double cfl);
 };
 #endif

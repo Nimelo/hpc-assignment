@@ -72,7 +72,7 @@ Configuration * ConfigurationLoader::loadFromLines(std::vector<std::string> line
 			getConfigurationParameter(TAG_LOWER_BOUND).toDouble(),
 			getConfigurationParameter(TAG_UPPER_BOUND).toDouble(),
 			getConfigurationParameter(TAG_ACCELERATION).toDouble(),
-			getConfigurationParameter(TAG_SCHEMA).toSchema(),
+			getConfigurationParameter(TAG_SCHEMA).value,
 			getConfigurationParameter(TAG_GRID_SIZE).toUnsignedInt(),
 			getConfigurationParameter(TAG_TIME_LEVELS).toVectorOfDouble(),
 			getConfigurationParameter(TAG_CFL).toDouble()

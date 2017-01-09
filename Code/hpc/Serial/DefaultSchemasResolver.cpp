@@ -5,15 +5,20 @@
 
 #include "DefaultSchemasResolver.h"
 
-AbstractSchema * DefaultSchemasResolver::resolve(SchemasEnum key, double a, double dx, double dt)
+AbstractSchema * DefaultSchemasResolver::resolve(std::string key, double a, double dx, double dt)
 {
-	switch (key)
+	if (key == "upwind-explicit")
 	{
-	case UPWIND_EXPLICIT:
 		return new UpwindExplicitSchema(a, dx, dt);
-	case UPWIND_IMPLICIT:
+	}
+	else if (key == "upwind-implicit")
+	{
 		return new UpwindImplicitSchema(a, dx, dt);
-	case CRANK_NICLOSON:
+	}
+	else if (key == "crank-nicolson")
+	{
 		return new CrankNicolsonSchema(a, dx, dt);
 	}
+	
+	throw new Exception();
 }

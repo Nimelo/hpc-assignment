@@ -30,7 +30,7 @@ public:
 	 * @param dt Delta T.
 	 * @return Schema corresponding to the given key.
 	 */
-	AbstractSchema * resolve(SchemasEnum key, double a, double dx, double dt);
+	AbstractSchema * resolve(std::string key, double a, double dx, double dt);
 };
 
 #endif

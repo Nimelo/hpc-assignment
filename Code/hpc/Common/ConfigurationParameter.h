@@ -47,17 +47,6 @@ struct ConfigurationParameter
 	std::vector<double> toVectorOfDouble();
 
 	/**
-	 * Casts value to SchemasEnum.
-	 * @see SchemasEnum
-	 * Correct values are: "upwind-implicit" for UPWIND_IMPLICIT,
-	 *                     "upwind-explicit" for UPWIND_EXPLICIT,
-	 *                     "crank-nicolson" for CRANK-NICOLSON.
-	 * @return Value as an SchemasEnum.
-	 * @throws std::runtime_error if value to convert is not in a set of correct values.
-	 */
-	SchemasEnum toSchema();
-
-	/**
 	 * Casts value to bool.
 	 * Correct values are: "true" and "1" for true and "false and "0" for false.
 	 * @return Value casted to bool.

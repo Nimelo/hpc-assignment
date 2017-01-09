@@ -40,24 +40,6 @@ std::vector<double> ConfigurationParameter::toVectorOfDouble()
 	return returnValue;
 }
 
-SchemasEnum ConfigurationParameter::toSchema()
-{
-	if (value == "upwind-implicit")
-	{
-		return UPWIND_IMPLICIT;
-	}
-	else if (value == "upwind-explicit")
-	{
-		return UPWIND_EXPLICIT;
-	}
-	else if (value == "crank-nicolson")
-	{
-		return CRANK_NICLOSON;
-	}
-	else
-		throw std::runtime_error("Conversion failed");
-}
-
 bool ConfigurationParameter::toBool()
 {
 	if (value == "true" || value == "1")
