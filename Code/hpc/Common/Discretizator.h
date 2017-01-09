@@ -16,7 +16,7 @@
  */
 class Discretizator
 {
-private:
+protected:
 
 	/**
 	 * Parameters for discretization.
@@ -46,13 +46,13 @@ public:
 	/**
 	 * Default destructor.
 	 */
-	~Discretizator();
+	virtual ~Discretizator();
 	
 	/**
 	 * Performs discretization process for given parameters and produces result.
 	 * @return Result of discretization.
 	 */
-	DiscretizationResult * discretize();
+	virtual DiscretizationResult * discretize();
 };
 
 #endif
