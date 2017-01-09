@@ -9,10 +9,9 @@ class ParallelExplicitDiscretizator : AbstractDiscretizator
 private:
 	long coreId;
 	long coreQuantity;
+	long fragmentation;
+	const long MAIN_CORE_ID = 0;
 
-	/**
-	 * Parameters for discretization.
-	 */
 	DiscretizationParameters * parameters;
 protected:
 	virtual std::vector<double>* getAnalyticalWave(double time);

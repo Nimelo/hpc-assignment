@@ -42,6 +42,7 @@ int main(int argc, char * argv[])
 		while(timeSteps[0] > currentTime) {
 			leftBound = getLowerBound(coreId, coresQuantity);
 			sendUpperBound(coreId, coresQuantity, oldSolution[fragmentation - 1]);
+			
 			newSolution[0] = oldSolution[0] - cfl * (oldSolution[0] - leftBound);
 			for (unsigned int space = 1; space < fragmentation; space++) {
 				newSolution[space] = oldSolution[space] - cfl * (oldSolution[space] - oldSolution[space - 1]);
