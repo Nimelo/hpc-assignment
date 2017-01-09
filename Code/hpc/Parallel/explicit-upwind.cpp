@@ -24,25 +24,24 @@ int main(int argc, char * argv[])
 	double lowerBound = -50;
 	double upperBound = 50;
 	double acceleration = 1.75;
-	unsigned int numberOfPoints = 6;
+	unsigned int numberOfPoints = 12;
 	double _timeSteps[2] = {5.0, 10.0};
 	std::vector<double> timeSteps(_timeSteps, _timeSteps + 2);
-	double cfl = 0.1;
+	double cfl = 0.9;
 	double dx = (upperBound - lowerBound) / numberOfPoints;
 	double dt = (cfl * dx) / acceleration;
 
 	double leftBound = 0;
 	unsigned int fragmentation = getFragmentation(coreId, coresQuantity, numberOfPoints);
-
 	double currentTime = 0.0;
 	double * oldSolution = new double [fragmentation];
 	double * newSolution = new double [fragmentation];
-	initializeArray(oldSolution, lowerBound + coreId * dx * (numberOfPoints / coresQuantity), acceleration, fragmentation, dx);
+	initializeArray(oldSolution, lowerBound + coreId * dx * floor(numberOfPoints / coresQuantity), acceleration, fragmentation, dx);
 
 	//for (unsigned int i = 0; i < timeSteps.size(); i++) {
 		while(timeSteps[0] > currentTime) {
 			leftBound = getLowerBound(coreId, coresQuantity);
-
+			sendUpperBound(coreId, coresQuantity, oldSolution[fragmentation - 1]);
 			newSolution[0] = oldSolution[0] - cfl * (oldSolution[0] - leftBound);
 			for (unsigned int space = 1; space < fragmentation; space++) {
 				newSolution[space] = oldSolution[space] - cfl * (oldSolution[space] - oldSolution[space - 1]);
@@ -52,12 +51,9 @@ int main(int argc, char * argv[])
 				oldSolution[i] = newSolution[i];
 			}
 
-			sendUpperBound(coreId, coresQuantity, oldSolution[fragmentation - 1]);
-
 			currentTime += dt;
 		}
 	//}
-	std::cout << "CoreId: " << coreId << std::endl;
 
 	if(coreId == 0)
 	{
@@ -70,9 +66,13 @@ int main(int argc, char * argv[])
 
 		for (unsigned int i = 1; i < coresQuantity; i++) {
 			MPI_Status status;
-			unsigned int fragmentationForI = getFragmentation(i, coresQuantity, numberOfPoints);
-			MPI_Recv(index, fragmentationForI, MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &status);
+			unsigned int fragmentationForI = getFragmentation(i - 1, coresQuantity, numberOfPoints);
 			index += fragmentationForI;
+			MPI_Recv(index, getFragmentation(i, coresQuantity, numberOfPoints), MPI_DOUBLE, i, 1, MPI_COMM_WORLD, &status);
+		}
+
+		for (unsigned int i = 0; i < numberOfPoints; i++) {
+			std::cout << finalSolution[i] << std::endl;
 		}
 
 		normCalculateNorms(finalSolution, numberOfPoints, lowerBound, acceleration, dx, currentTime - dt);
@@ -81,10 +81,9 @@ int main(int argc, char * argv[])
 		MPI_Send(oldSolution, fragmentation, MPI_DOUBLE, 0,  1, MPI_COMM_WORLD);
 	}
 
+	MPI_Barrier(MPI_COMM_WORLD);
 	delete [] oldSolution;
 	delete [] newSolution;
-
-	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Finalize();
 	return 0;
 }
@@ -130,14 +129,12 @@ void sendUpperBound(int coreId, int coresQuantity, double value)
 {
 	if(coreId != coresQuantity - 1)
 	{
-				std::cout << "sendUpperBound by " << coreId << std::endl;
 				MPI_Send(&value, 1, MPI_DOUBLE, coreId + 1,  0, MPI_COMM_WORLD);
 	}
 }
 
 double getLowerBound(int coreId, int coresQuantity)
 {
-	std::cout << "getLowerBound by " << coreId << std::endl;
 	if (coreId == 0) {
 		return 0;
 	} else {
