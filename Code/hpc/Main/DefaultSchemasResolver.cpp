@@ -28,5 +28,9 @@ AbstractSchema * DefaultSchemasResolver::resolve(std::string key, long coreId, l
 	{
 		return new ImplicitUpwindParallelSchema(coreId, coresQuantity, a, dx, dt);
 	}
+	else if (key == Constants::CRANK_NICOLSON_PARALLEL)
+	{
+		return new CrankNicolsonParallelSchema(coreId, coresQuantity, a, dx, dt);
+	}
 		throw new Exception();
 }

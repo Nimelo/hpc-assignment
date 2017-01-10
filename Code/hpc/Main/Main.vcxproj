@@ -153,6 +153,7 @@
     <ClInclude Include="ConfigurationLoadingException.h" />
     <ClInclude Include="ConfigurationParameter.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="CrankNicolsonParallelSchema.h" />
     <ClInclude Include="CrankNicolsonSchema.h" />
     <ClInclude Include="DefaultSchemasResolver.h" />
     <ClInclude Include="DiscretizationParameters.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="DiscretizatorsFactory.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="ExplicitUpwindParallelSchema.h" />
+    <ClInclude Include="ImplicitUpwindParallelSchema.h" />
     <ClInclude Include="MPIObject.h" />
     <ClInclude Include="MPIWrapper.h" />
     <ClInclude Include="NormsPerTimeLevel.h" />
@@ -178,6 +180,7 @@
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationLoader.cpp" />
     <ClCompile Include="ConfigurationParameter.cpp" />
+    <ClCompile Include="CrankNicolsonParallelSchema.cpp" />
     <ClCompile Include="CrankNicolsonSchema.cpp" />
     <ClCompile Include="DefaultSchemasResolver.cpp" />
     <ClCompile Include="DiscretizationParameters.cpp" />
@@ -186,6 +189,7 @@
     <ClCompile Include="DiscretizatorsFactory.cpp" />
     <ClCompile Include="explicit-upwind.cpp" />
     <ClCompile Include="ExplicitUpwindParallelSchema.cpp" />
+    <ClCompile Include="ImplicitUpwindParallelSchema.cpp" />
     <ClCompile Include="MPIWrapper.cpp" />
     <ClCompile Include="NormSummary.cpp" />
     <ClCompile Include="ParallelDiscretizator.cpp" />

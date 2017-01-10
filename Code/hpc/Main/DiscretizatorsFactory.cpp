@@ -42,7 +42,8 @@ Discretizator * DiscretizatorsFactory::manufacture(Configuration * configuration
 		return new Discretizator(coreId, coresQuantity, discretizationParameters);
 	}
 	else if (std::string(Constants::UPWIND_EXPLICIT_PARALLEL) == schema
-		|| std::string(Constants::UPWIND_IMPLICIT_PARALLEL) == schema)
+		|| std::string(Constants::UPWIND_IMPLICIT_PARALLEL) == schema
+		|| std::string(Constants::CRANK_NICOLSON_PARALLEL) == schema)
 	{
 		return new ParallelDiscretizator(coreId, coresQuantity, discretizationParameters);
 	}

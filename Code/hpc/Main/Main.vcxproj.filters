@@ -165,6 +165,9 @@
     <ClInclude Include="ImplicitUpwindParallelSchema.h">
       <Filter>Header Files\Schemes\Parallel</Filter>
     </ClInclude>
+    <ClInclude Include="CrankNicolsonParallelSchema.h">
+      <Filter>Header Files\Schemes\Parallel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnalyticalFunctions.cpp">
@@ -231,6 +234,9 @@
       <Filter>Source Files\Factories</Filter>
     </ClCompile>
     <ClCompile Include="ImplicitUpwindParallelSchema.cpp">
+      <Filter>Source Files\Schemes\Parallel</Filter>
+    </ClCompile>
+    <ClCompile Include="CrankNicolsonParallelSchema.cpp">
       <Filter>Source Files\Schemes\Parallel</Filter>
     </ClCompile>
   </ItemGroup>
