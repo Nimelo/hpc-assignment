@@ -54,6 +54,7 @@ void MPIWrapper::receiveDoublesFromCore(long coreId, int tag, long quantity, dou
 {
 	#ifdef MPI
 		MPI_Status status;
-		MPI_Recv(&storage, quantity, MPI_DOUBLE, coreId, tag, MPI_COMM_WORLD, &status);
+		MPI_Recv(storage, quantity, MPI_DOUBLE, coreId, tag, MPI_COMM_WORLD, &status);
+
 	#endif
 }

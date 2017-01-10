@@ -35,12 +35,12 @@ std::vector<double>* ParallelDiscretizator::initializeSolution()
 
 void ParallelDiscretizator::gatherAndAddSolution(std::vector<double>* mainCoreSolution, DiscretizationResult * result, double time)
 {
-	std::vector<double> * finalSolution = new std::vector<double>(this->parameters->meshSize);
-	double * index = &(*finalSolution)[0];
+	double * finalSolution = new double[(this->parameters->meshSize)];
+	double * index = finalSolution;
 
 	for (long i = 0; i < fragmentation; i++)
 	{
-		finalSolution->at(i) = mainCoreSolution->at(i);
+		finalSolution[i] = mainCoreSolution->at(i);
 	}
 
 	for (long i = 1; i < this->coresQuantity; i++)
@@ -50,7 +50,7 @@ void ParallelDiscretizator::gatherAndAddSolution(std::vector<double>* mainCoreSo
 		MPIWrapper::receiveDoublesFromCore(i, 1, getFragmentation(i, coresQuantity, this->parameters->meshSize), index);
 	}
 
-	std::vector<double> * copy = new std::vector<double>((*finalSolution).begin(), (*finalSolution).end());
+	std::vector<double> * copy = new std::vector<double>(finalSolution, finalSolution + this->parameters->meshSize);
 	copy = this->parameters->schema->postApplyAction(copy, time);
 
 	result->addWaves(time, copy, getAnalyticalWave(time));
@@ -87,10 +87,7 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 		{
 			try {
 				std::vector<double> * newSolution = this->parameters->schema->apply(oldSolution);
-				std::cout << "time: " << time << std::endl;
-				for (size_t i = 0; i < this->parameters->meshSize; i++) {
-					std::cout << newSolution->at(i) << std::endl;
-				}
+
 				delete oldSolution;
 				oldSolution = newSolution;
 				time += this->parameters->deltaT;

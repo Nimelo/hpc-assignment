@@ -72,11 +72,11 @@ int main(int argc, char * argv[])
 			delete result;
 			delete norms;
 		}
-		
+
 		delete discretizator;
 		delete configuration;
 	}
-	catch (...)
+	catch (Exception e)
 	{
 		std::cout << "Exception" << std::endl;
 	}
