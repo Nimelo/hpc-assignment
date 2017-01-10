@@ -12,6 +12,7 @@
 #include "UpwindImplicitSchema.h"
 #include "CrankNicolsonSchema.h"
 #include "ExplicitUpwindParallelSchema.h"
+#include "ImplicitUpwindParallelSchema.h"
 
 /**
  * @brief Default resolver for schemas.

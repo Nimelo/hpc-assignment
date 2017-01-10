@@ -19,11 +19,11 @@ std::vector<double>* UpwindImplicitSchema::apply(std::vector<double>* previousWa
 	std::vector<double> * currentWave = new std::vector<double>(gridSize);
 
 	currentWave->at(0) = previousWave->at(0);
-	currentWave->at(gridSize - 1) = previousWave->at(gridSize - 1);
+	//currentWave->at(gridSize - 1) = previousWave->at(gridSize - 1);
 
 	if (cfl > 0)
 	{
-		for (unsigned int i = 1; i < gridSize - 1; i++)
+		for (unsigned int i = 1; i < gridSize; i++)
 		{
 			currentWave->at(i) = (previousWave->at(i) + cfl * currentWave->at(i - 1)) / (1.0 + cfl);
 		}
