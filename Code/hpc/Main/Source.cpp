@@ -69,7 +69,8 @@ int main(int argc, char * argv[])
 			ns.open(normsFile, std::fstream::out | std::fstream::trunc);
 			NormSummary * norms = result->getNorms();
 			std::cout << *norms;
-			ns << *norms;
+			ns << *norms << std::endl;
+			ns << "Calculated in: " << (end - begin) << std::endl;
 			ns.close();
 			delete result;
 			delete norms;
