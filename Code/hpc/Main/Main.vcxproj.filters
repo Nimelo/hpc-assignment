@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Configurations">
+      <UniqueIdentifier>{79e1c013-b5a3-4cca-b1ff-470bf4603a72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Configurations\Loaders">
+      <UniqueIdentifier>{b5c731c2-5e55-4230-b426-9be2761ba732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Discretizators">
+      <UniqueIdentifier>{77ef64e5-b27f-4531-b715-92c949eaae19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Discretizators\Parameters">
+      <UniqueIdentifier>{06837b17-d1a2-4655-b0ab-26dda21ee8a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Discretizators\Results">
+      <UniqueIdentifier>{6f469523-d8a7-4fbf-bcef-efb67939346c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Exceptions">
+      <UniqueIdentifier>{9dc1e08a-d23b-4589-bf02-d049bc9ce959}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Schemes">
+      <UniqueIdentifier>{53b806fc-3a46-44ab-9cf2-d5cca658975a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Schemes\Serial">
+      <UniqueIdentifier>{bbc4ef90-5268-41a5-aab9-58695baf0a96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\MPIs">
+      <UniqueIdentifier>{a42788bc-ce88-40e0-9f62-16b1da46698a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Schemes\Parallel">
+      <UniqueIdentifier>{bb065d02-e50e-4424-8acd-c408041aeb31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Resolvers">
+      <UniqueIdentifier>{1d3cbf8e-c667-476d-9364-413eb75fcb21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resolvers">
+      <UniqueIdentifier>{9f06a995-a797-4892-b1c6-b3eaf69501c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Schemes">
+      <UniqueIdentifier>{5061dbd8-af0f-467a-85b2-fd5c904501e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Schemes\Serial">
+      <UniqueIdentifier>{73b08bed-f4a0-47dc-b784-8a8771c12969}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Schemes\Parallel">
+      <UniqueIdentifier>{c7d5fa96-613d-4655-9e77-e39832f14335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Discretizators">
+      <UniqueIdentifier>{ef7cde7c-4e07-4a29-bfe2-6f66592f49a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Discretizators\Results">
+      <UniqueIdentifier>{f4050526-605b-4e96-bcac-537deec0985a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Discretizators\Parameters">
+      <UniqueIdentifier>{a322fa4c-5b24-4505-b13c-f238a72e3079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Configurations">
+      <UniqueIdentifier>{7ad5d928-0dae-4be1-ae31-d03c279923ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Configurations\Loaders">
+      <UniqueIdentifier>{28265d3f-079b-41f2-acd5-2e24c9b6dffe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\MPIs">
+      <UniqueIdentifier>{2259a14d-ddab-456b-9252-b62456d73d6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{cc59d370-d7da-4cdf-ac85-623767481432}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Factories">
+      <UniqueIdentifier>{14f41ce9-3fcc-4de7-8c76-d2bc7ba501f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Factories">
+      <UniqueIdentifier>{7a9695b5-2ee7-4b7e-ba4c-917d1ad94b36}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AnalyticalFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Configuration.h">
+      <Filter>Header Files\Configurations</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurationLoader.h">
+      <Filter>Header Files\Configurations\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurationParameter.h">
+      <Filter>Header Files\Configurations</Filter>
+    </ClInclude>
+    <ClInclude Include="Discretizator.h">
+      <Filter>Header Files\Discretizators</Filter>
+    </ClInclude>
+    <ClInclude Include="ParallelDiscretizator.h">
+      <Filter>Header Files\Discretizators</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscretizationParameters.h">
+      <Filter>Header Files\Discretizators\Parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscretizationResult.h">
+      <Filter>Header Files\Discretizators\Results</Filter>
+    </ClInclude>
+    <ClInclude Include="NormsPerTimeLevel.h">
+      <Filter>Header Files\Discretizators\Results</Filter>
+    </ClInclude>
+    <ClInclude Include="NormSummary.h">
+      <Filter>Header Files\Discretizators\Results</Filter>
+    </ClInclude>
+    <ClInclude Include="WavesSummary.h">
+      <Filter>Header Files\Discretizators\Results</Filter>
+    </ClInclude>
+    <ClInclude Include="WavePointsSummary.h">
+      <Filter>Header Files\Discretizators\Results</Filter>
+    </ClInclude>
+    <ClInclude Include="Exception.h">
+      <Filter>Header Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="StabilityConditionException.h">
+      <Filter>Header Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurationLoadingException.h">
+      <Filter>Header Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractSchema.h">
+      <Filter>Header Files\Schemes</Filter>
+    </ClInclude>
+    <ClInclude Include="UpwindExplicitSchema.h">
+      <Filter>Header Files\Schemes\Serial</Filter>
+    </ClInclude>
+    <ClInclude Include="CrankNicolsonSchema.h">
+      <Filter>Header Files\Schemes\Serial</Filter>
+    </ClInclude>
+    <ClInclude Include="UpwindImplicitSchema.h">
+      <Filter>Header Files\Schemes\Serial</Filter>
+    </ClInclude>
+    <ClInclude Include="MPIWrapper.h">
+      <Filter>Header Files\MPIs</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplicitUpwindParallelSchema.h">
+      <Filter>Header Files\Schemes\Parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="DefaultSchemasResolver.h">
+      <Filter>Header Files\Resolvers</Filter>
+    </ClInclude>
+    <ClInclude Include="MPIObject.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscretizatorsFactory.h">
+      <Filter>Header Files\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AnalyticalFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="explicit-upwind.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultSchemasResolver.cpp">
+      <Filter>Source Files\Resolvers</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractSchema.cpp">
+      <Filter>Source Files\Schemes</Filter>
+    </ClCompile>
+    <ClCompile Include="CrankNicolsonSchema.cpp">
+      <Filter>Source Files\Schemes\Serial</Filter>
+    </ClCompile>
+    <ClCompile Include="UpwindExplicitSchema.cpp">
+      <Filter>Source Files\Schemes\Serial</Filter>
+    </ClCompile>
+    <ClCompile Include="UpwindImplicitSchema.cpp">
+      <Filter>Source Files\Schemes\Serial</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplicitUpwindParallelSchema.cpp">
+      <Filter>Source Files\Schemes\Parallel</Filter>
+    </ClCompile>
+    <ClCompile Include="Discretizator.cpp">
+      <Filter>Source Files\Discretizators</Filter>
+    </ClCompile>
+    <ClCompile Include="ParallelDiscretizator.cpp">
+      <Filter>Source Files\Discretizators</Filter>
+    </ClCompile>
+    <ClCompile Include="NormSummary.cpp">
+      <Filter>Source Files\Discretizators\Results</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscretizationResult.cpp">
+      <Filter>Source Files\Discretizators\Results</Filter>
+    </ClCompile>
+    <ClCompile Include="WavePointsSummary.cpp">
+      <Filter>Source Files\Discretizators\Results</Filter>
+    </ClCompile>
+    <ClCompile Include="WavesSummary.cpp">
+      <Filter>Source Files\Discretizators\Results</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscretizationParameters.cpp">
+      <Filter>Source Files\Discretizators\Parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurationLoader.cpp">
+      <Filter>Source Files\Configurations\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files\Configurations</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigurationParameter.cpp">
+      <Filter>Source Files\Configurations</Filter>
+    </ClCompile>
+    <ClCompile Include="MPIWrapper.cpp">
+      <Filter>Source Files\MPIs</Filter>
+    </ClCompile>
+    <ClCompile Include="DiscretizatorsFactory.cpp">
+      <Filter>Source Files\Factories</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
