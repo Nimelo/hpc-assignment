@@ -1,10 +1,11 @@
 #include "MPIWrapper.h"
-
+#include <mpi.h>
+#define MPI
 void MPIWrapper::init(int * argc, char *** argv)
 {
 	#ifdef MPI
 		MPI_Init(argc, argv);
-	#endif 
+	#endif
 }
 
 long MPIWrapper::getCoreId()
@@ -36,7 +37,7 @@ void MPIWrapper::sendDoublesToCore(long coreId, int tag, double * doubles, long 
 {
 	#ifdef MPI
 		MPI_Send(doubles, quantity, MPI_DOUBLE, coreId, tag, MPI_COMM_WORLD);
-	#endif 
+	#endif
 }
 
 double MPIWrapper::receiveSingleDoubleFromCore(long coreId, int tag)

@@ -48,6 +48,6 @@ Discretizator * DiscretizatorsFactory::manufacture(Configuration * configuration
 	else
 	{
 		delete discretizationParameters;
-		return NULL;
+		throw Exception();
 	}
 }

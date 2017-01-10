@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <vector>
+#include <iostream>
 
 #include "ParallelDiscretizator.h"
 #include "Exception.h"
@@ -26,7 +27,7 @@ std::vector<double>* ParallelDiscretizator::initializeSolution()
 	double lowerBound = this->parameters->lowerBound + coreId * this->parameters->deltaX * floor(this->parameters->meshSize / coresQuantity);
 
 	for (unsigned int i = 0; i < fragmentation; i++) {
-		solution->at(i) = this->parameters->analyticalFunction(this->parameters->acceleration, lowerBound + i * this->parameters->deltaX, 0.0);
+		solution->at(i) = this->parameters->analyticalFunction(lowerBound + i * this->parameters->deltaX, 0.0, this->parameters->acceleration);
 	}
 
 	return solution;
@@ -67,7 +68,7 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 {
 	this->checkStabilityCondition();
 	DiscretizationResult * result = NULL;
-	
+
 	if (coreId == Constants::ROOT_CORE)
 	{
 		result = new DiscretizationResult(this->parameters->lowerBound, this->parameters->upperBound, this->parameters->deltaX);
@@ -77,6 +78,7 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 	std::vector<double> timeLevels(this->parameters->timeLevels);
 
 	double time = 0.0;
+
 	std::vector<double> * oldSolution = initializeSolution();
 
 	while(timeLevels.size() > 0)
@@ -85,6 +87,10 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 		{
 			try {
 				std::vector<double> * newSolution = this->parameters->schema->apply(oldSolution);
+				std::cout << "time: " << time << std::endl;
+				for (size_t i = 0; i < this->parameters->meshSize; i++) {
+					std::cout << newSolution->at(i) << std::endl;
+				}
 				delete oldSolution;
 				oldSolution = newSolution;
 				time += this->parameters->deltaT;
@@ -95,7 +101,7 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 				if (coreId == Constants::ROOT_CORE)
 				{
 					delete result;
-				}			
+				}
 				throw e;
 			}
 		}
