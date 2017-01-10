@@ -162,6 +162,9 @@
     <ClInclude Include="Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ImplicitUpwindParallelSchema.h">
+      <Filter>Header Files\Schemes\Parallel</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnalyticalFunctions.cpp">
@@ -226,6 +229,9 @@
     </ClCompile>
     <ClCompile Include="DiscretizatorsFactory.cpp">
       <Filter>Source Files\Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="ImplicitUpwindParallelSchema.cpp">
+      <Filter>Source Files\Schemes\Parallel</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

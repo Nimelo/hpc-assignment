@@ -8,7 +8,6 @@
 #include "DiscretizationResult.h"
 #include "Exception.h"
 #include "ConfigurationLoadingException.h"
-#define MPI
 #include "MPIWrapper.h"
 
 #define PARAMETER_COUNT 4

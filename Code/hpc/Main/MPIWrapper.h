@@ -1,6 +1,6 @@
 #ifndef __H_MPI_WRAPPER
 #define __H_MPI_WRAPPER
-#define MPI
+
 #ifdef MPI
 	#include <mpi.h>
 #endif

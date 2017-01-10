@@ -1,6 +1,4 @@
 #include "MPIWrapper.h"
-#include <mpi.h>
-#define MPI
 
 double MPIWrapper::getTime()
 {
