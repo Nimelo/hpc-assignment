@@ -5,10 +5,9 @@
  
 #include "UpwindExplicitSchema.h"
 
-UpwindExplicitSchema::UpwindExplicitSchema(double a, double dx, double dt)
-	: AbstractSchema(a, dx, dt)
+UpwindExplicitSchema::UpwindExplicitSchema(long coreId, long coresQuantity, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, a, dx, dt)
 {
-
 }
 
 void UpwindExplicitSchema::checkStabilityCondition()

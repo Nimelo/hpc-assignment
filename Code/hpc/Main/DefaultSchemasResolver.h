@@ -11,6 +11,7 @@
 #include "UpwindExplicitSchema.h"
 #include "UpwindImplicitSchema.h"
 #include "CrankNicolsonSchema.h"
+#include "ExplicitUpwindParallelSchema.h"
 
 /**
  * @brief Default resolver for schemas.
@@ -24,12 +25,14 @@ public:
 	 * Resolves schema by given key.
 	 * @see SchemasEnum
 	 * @param key Key for schema.
+	 * @param coreId Current core id.
+	 * @param coresQuantity Quantity of reserved cores.
 	 * @param a Acceleration.
 	 * @param dx Delta X.
 	 * @param dt Delta T.
 	 * @return Schema corresponding to the given key.
 	 */
-	AbstractSchema * resolve(std::string key, double a, double dx, double dt);
+	AbstractSchema * resolve(std::string key, long coreId, long coresQuantity, double a, double dx, double dt);
 };
 
 #endif

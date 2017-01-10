@@ -33,11 +33,13 @@ public:
 
 	/**
 	* Explicitly defined constructor.
+	* @param coreId Current core id.
+	* @param coresQuantity Quantity of reserved cores.
 	* @param a Acceleration.
 	* @param dx Delta x.
 	* @param dt Delta t.
 	*/
-	CrankNicolsonSchema(double a, double dx, double dt);
+	CrankNicolsonSchema(long coreId, long coresQuantity, double a, double dx, double dt);
 
 	/**
 	* Shifts wave by 2uT

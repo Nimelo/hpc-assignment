@@ -32,11 +32,10 @@ void Discretizator::checkStabilityCondition() const
 	this->parameters->schema->checkStabilityCondition();
 }
 
-Discretizator::Discretizator(DiscretizationParameters * parameters)
-	: parameters(parameters)
+Discretizator::Discretizator(long coreId, long coresQuantity, DiscretizationParameters * parameters)
+	: MPIObject(coreId, coresQuantity), parameters(parameters)
 {
 }
-
 
 Discretizator::~Discretizator()
 {

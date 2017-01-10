@@ -22,13 +22,15 @@ class UpwindExplicitSchema : public AbstractSchema
 public:
 	/**
 	* Explicitly defined constructor.
+	* @param coreId Current core id.
+	* @param coresQuantity Quantity of reserved cores.
 	* @param a Acceleration.
 	* @param dx Delta x.
 	* @param dt Delta t.
 	*/
-	UpwindExplicitSchema(double a, double dx, double dt);
-
-	/**
+	 UpwindExplicitSchema(long coreId, long coresQuantity, double a, double dx, double dt);
+	
+	 /**
 	 * Checks the stability condition for given parameters.
 	 * @throw StabilityConditionException if calculated coefficient (CFL) is greater than upper boundary.
 	 */

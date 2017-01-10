@@ -5,20 +5,23 @@
 
 #include "DefaultSchemasResolver.h"
 
-AbstractSchema * DefaultSchemasResolver::resolve(std::string key, double a, double dx, double dt)
+AbstractSchema * DefaultSchemasResolver::resolve(std::string key, long coreId, long coresQuantity, double a, double dx, double dt)
 {
 	if (key == "upwind-explicit")
 	{
-		return new UpwindExplicitSchema(a, dx, dt);
+		return new UpwindExplicitSchema(coreId, coresQuantity, a, dx, dt);
 	}
 	else if (key == "upwind-implicit")
 	{
-		return new UpwindImplicitSchema(a, dx, dt);
+		return new UpwindImplicitSchema(coreId, coresQuantity, a, dx, dt);
 	}
 	else if (key == "crank-nicolson")
 	{
-		return new CrankNicolsonSchema(a, dx, dt);
+		return new CrankNicolsonSchema(coreId, coresQuantity, a, dx, dt);
 	}
-	
-	throw new Exception();
+	else if (key == "upwind-explicit-parallel")
+	{
+		return new ExplicitUpwindParallelSchema(coreId, coresQuantity, a, dx, dt);
+	}
+		throw new Exception();
 }

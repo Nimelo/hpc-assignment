@@ -9,6 +9,7 @@ protected:
 	double getLowerBound(long coreId, long coresQuantity, double bound);
 	void sendUpperBound(long coreId, long coresQuantity, double value);
 public:
+	ExplicitUpwindParallelSchema(long coreId, long coresQuantity, double a, double dx, double dt);
 	virtual void checkStabilityCondition();
 	virtual std::vector<double>* apply(std::vector<double>* previousWave);
 };

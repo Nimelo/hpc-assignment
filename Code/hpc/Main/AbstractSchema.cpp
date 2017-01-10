@@ -5,8 +5,8 @@
 
 #include "AbstractSchema.h"
 
-AbstractSchema::AbstractSchema(double a, double dx, double dt)
-	: accelertaion(a), deltaT(dt), deltaX(dx)
+AbstractSchema::AbstractSchema(long coreId, long coresQuantity, double a, double dx, double dt)
+	: MPIObject(coreId, coresQuantity), accelertaion(a), deltaT(dt), deltaX(dx)
 {
 	cfl = accelertaion * deltaT / deltaX;
 }

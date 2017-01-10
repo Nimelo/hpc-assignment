@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "MPIObject.h"
 #include "DiscretizationParameters.h"
 #include "DiscretizationResult.h"
 
@@ -14,7 +15,7 @@
  * @brief Tool for solving discretization problem given by parameters.
  * @author Mateusz Gasior
  */
-class Discretizator
+class Discretizator : public MPIObject
 {
 protected:
 
@@ -39,9 +40,11 @@ public:
 
 	/**
 	 * Overridden constructor for explicitly given parameters.
+	 * @param coreId Current core id.
+	 * @param coresQuantity Quantity of cores.
 	 * @param parameters Discretization parameters.
 	 */
-	Discretizator(DiscretizationParameters * parameters);
+	Discretizator(long coreId, long coresQuantity, DiscretizationParameters * parameters);
 
 	/**
 	 * Default destructor.

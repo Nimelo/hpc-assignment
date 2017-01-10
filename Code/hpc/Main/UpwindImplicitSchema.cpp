@@ -40,8 +40,8 @@ std::vector<double>* UpwindImplicitSchema::apply(std::vector<double>* previousWa
 	return currentWave;
 }
 
-UpwindImplicitSchema::UpwindImplicitSchema(double a, double dx, double dt)
-	: AbstractSchema(a, dx, dt)
+UpwindImplicitSchema::UpwindImplicitSchema(long coreId, long coresQuantity, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, a, dx, dt)
 {
 }
 

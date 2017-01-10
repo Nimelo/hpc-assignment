@@ -3,6 +3,7 @@
 
 #include "ParallelDiscretizator.h"
 #include "Exception.h"
+#include "Constants.h"
 
 long ParallelDiscretizator::getFragmentation(long coreId, long coresQuantity, long jobSize)
 {
@@ -56,13 +57,10 @@ void ParallelDiscretizator::gatherAndAddSolution(std::vector<double>* mainCoreSo
 	delete finalSolution;
 }
 
-ParallelDiscretizator::ParallelDiscretizator(DiscretizationParameters * parameters)
-	: Discretizator(parameters)
+ParallelDiscretizator::ParallelDiscretizator(long coreId, long coresQuantity, DiscretizationParameters * parameters)
+	: Discretizator(coreId, coresQuantity, parameters)
 {
-	this->coreId = MPIWrapper::getCoreId();
-	this->coresQuantity = MPIWrapper::getQuantityOfCores();
 	this->fragmentation = this->getFragmentation(coreId, coresQuantity, this->parameters->meshSize);
-	this->mainCoreId = 0;
 }
 
 DiscretizationResult * ParallelDiscretizator::discretize()
@@ -70,7 +68,7 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 	this->checkStabilityCondition();
 	DiscretizationResult * result = NULL;
 	
-	if (coreId == mainCoreId)
+	if (coreId == Constants::ROOT_CORE)
 	{
 		result = new DiscretizationResult(this->parameters->lowerBound, this->parameters->upperBound, this->parameters->deltaX);
 	}
@@ -94,7 +92,7 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 			catch (Exception & e)
 			{
 				delete oldSolution;
-				if (coreId == mainCoreId)
+				if (coreId == Constants::ROOT_CORE)
 				{
 					delete result;
 				}			
@@ -102,13 +100,13 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 			}
 		}
 
-		if (coreId == mainCoreId)
+		if (coreId == Constants::ROOT_CORE)
 		{
 			this->gatherAndAddSolution(oldSolution, result, time - this->parameters->deltaT);
 		}
 		else
 		{
-			MPIWrapper::sendDoublesToCore(mainCoreId, 1, &(*oldSolution)[0], fragmentation);
+			MPIWrapper::sendDoublesToCore(Constants::ROOT_CORE, 1, &(*oldSolution)[0], fragmentation);
 		}
 
 		timeLevels.erase(timeLevels.begin());

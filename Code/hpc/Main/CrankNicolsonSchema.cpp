@@ -93,8 +93,8 @@ void CrankNicolsonSchema::ThomasAlgorithm(int N, double b, double a, double c, d
 	return;
 }
 
-CrankNicolsonSchema::CrankNicolsonSchema(double a, double dx, double dt)
-	: AbstractSchema(a, dx, dt)
+CrankNicolsonSchema::CrankNicolsonSchema(long coreId, long coresQuantity, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, a, dx, dt)
 {
 }
 

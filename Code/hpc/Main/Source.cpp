@@ -4,19 +4,11 @@
 #include "ConfigurationLoader.h"
 #include "Configuration.h"
 
-#include "AnalyticalFunctions.h"
-#include "DefaultSchemasResolver.h"
-
-#include "DiscretizationParameters.h"
-#include "Discretizator.h"
-
+#include "DiscretizatorsFactory.h"
 #include "DiscretizationResult.h"
 #include "Exception.h"
 #include "ConfigurationLoadingException.h"
-#include "DiscretizationParameters.h"
-#include "DefaultSchemasResolver.h"
-#include "WavePointsSummary.h"
-#include "NormSummary.h"
+#include "MPIWrapper.h"
 
 #define PARAMETER_COUNT 4
 
@@ -44,6 +36,10 @@ int main(int argc, char * argv[])
 			return -1;
 		}
 
+		MPIWrapper::init(&argc, &argv);
+		long coreId = MPIWrapper::getCoreId();
+		long coresQuantity = MPIWrapper::getQuantityOfCores();
+
 		char * configurationFile = argv[CONFIGURATION_FILE_INDEX];
 		char * wavesFile = argv[WAVE_FILE_INDEX];
 		char * normsFile = argv[NORM_FILE_INDEX];
@@ -51,27 +47,12 @@ int main(int argc, char * argv[])
 		ConfigurationLoader configurationLoader;
 		Configuration * configuration = configurationLoader.loadFromFile(configurationFile);
 
-		double dx = (configuration->upperBound - configuration->lowerBound) / configuration->numberOfPoints;
-		double dt = (configuration->cfl * dx) / configuration->acceleration;
+		DiscretizatorsFactory discretizatorsFactory;
+		Discretizator * discretizator = discretizatorsFactory.manufacture(configuration, coreId, coresQuantity);
 
-		DefaultSchemasResolver * schemaResolver = new DefaultSchemasResolver();
+		DiscretizationResult * result = discretizator->discretize();
 
-		DiscretizationParameters * discretizationParameters = new DiscretizationParameters(
-			configuration->lowerBound,
-			configuration->upperBound,
-			configuration->acceleration,
-			(long)configuration->numberOfPoints,
-			AnalyticalFunctions::expFunction,
-			schemaResolver->resolve(configuration->schema, configuration->acceleration, dx, dt),
-			configuration->timeLevels,
-			dt,
-			dx
-		);
-
-		Discretizator discretizator(discretizationParameters);
-
-		DiscretizationResult * result = discretizator.discretize();
-
+		//TODO: ResultSaver
 		std::fstream ws;
 		ws.open(wavesFile, std::fstream::out | std::fstream::trunc);
 		WavesSummary * pointsAtTimeT = result->getValuesAtTimeT();
@@ -85,7 +66,7 @@ int main(int argc, char * argv[])
 		ns << *norms;
 		ns.close();
 
-		delete schemaResolver;
+		delete discretizator;
 		delete result;
 		delete configuration;
 		delete norms;
@@ -95,5 +76,6 @@ int main(int argc, char * argv[])
 		std::cout << "Exception" << std::endl;
 	}
 
+	MPIWrapper::finalize();
 	return 0;
 }

@@ -19,6 +19,11 @@ void ExplicitUpwindParallelSchema::sendUpperBound(long coreId, long coresQuantit
 	}
 }
 
+ExplicitUpwindParallelSchema::ExplicitUpwindParallelSchema(long coreId, long coresQuantity, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, a , dx, dt)
+{
+}
+
 void ExplicitUpwindParallelSchema::checkStabilityCondition()
 {
 }

@@ -7,13 +7,14 @@
 #define __H_ABSTRACT_SCHEMA
 
 #include <vector>
+#include "MPIObject.h"
 
 /**
  * @brief Abstraction for schema.
  * Provides all methods that have to be used by discretizator.
  * @author Mateusz Gasior
  */
-class AbstractSchema
+class AbstractSchema : public MPIObject
 {
 protected:
 
@@ -40,11 +41,13 @@ public:
 
 	/**
 	 * Explicitly defined constructor.
+	 * @param coreId Current core id.
+	 * @param coresQuantity Quantity of reserved cores.
 	 * @param a Acceleration.
 	 * @param dx Delta x.
 	 * @param dt Delta t.
 	 */	 
-	explicit AbstractSchema(double a, double dx, double dt);
+	explicit AbstractSchema(long coreId, long coresQuantity, double a, double dx, double dt);
 
 	/**
 	 * Default destructor.
