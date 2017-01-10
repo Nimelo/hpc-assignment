@@ -38,10 +38,9 @@ int main(int argc, char * argv[])
 		}
 
 		MPIWrapper::init(&argc, &argv);
+		double begin, end;
 		long coreId = MPIWrapper::getCoreId();
 		long coresQuantity = MPIWrapper::getQuantityOfCores();
-		std::cout << "coreId: " <<coreId << std::endl;
-		std::cout << "coresQuantity: " << coresQuantity << std::endl;
 		char * configurationFile = argv[CONFIGURATION_FILE_INDEX];
 		char * wavesFile = argv[WAVE_FILE_INDEX];
 		char * normsFile = argv[NORM_FILE_INDEX];
@@ -52,10 +51,13 @@ int main(int argc, char * argv[])
 		DiscretizatorsFactory discretizatorsFactory;
 		Discretizator * discretizator = discretizatorsFactory.manufacture(configuration, coreId, coresQuantity);
 
+		begin = MPIWrapper::getTime();
 		DiscretizationResult * result = discretizator->discretize();
+		end = MPIWrapper::getTime();
 
 		if(coreId == 0)
 		{
+			std::cout << "Calculated in: " << (end - begin) << std::endl;
 			//TODO: ResultSaver
 			std::fstream ws;
 			ws.open(wavesFile, std::fstream::out | std::fstream::trunc);

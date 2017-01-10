@@ -9,6 +9,7 @@ class MPIWrapper
 {
 public:
 	static void init(int * argc, char *** argv);
+	static double getTime();
 	static long getCoreId();
 	static long getQuantityOfCores();
 	static void finalize();

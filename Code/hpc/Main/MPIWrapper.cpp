@@ -1,6 +1,16 @@
 #include "MPIWrapper.h"
 #include <mpi.h>
 #define MPI
+
+double MPIWrapper::getTime()
+{
+		double value = 0.0;
+		#ifdef MPI
+			value = MPI_Wtime();
+		#endif
+		return value;
+}
+
 void MPIWrapper::init(int * argc, char *** argv)
 {
 	#ifdef MPI
