@@ -57,7 +57,7 @@ public:
 	*/
 	virtual std::vector<double> * postApplyAction(std::vector<double> * previousWave, double t);
 
-	std::vector<double> * CrankNicolsonSchema::ForwardAndBackWardSubstition(double *q);
+	std::vector<double> * ForwardAndBackWardSubstition(double *q);
 
 };
 
