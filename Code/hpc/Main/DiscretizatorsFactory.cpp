@@ -1,3 +1,8 @@
+/**
+ * @file DiscretizatorsFactory.cpp
+ * @brief Implementation of methods for DiscretizatorsFactory.
+ */
+
 #include "DiscretizatorsFactory.h"
 #include "AnalyticalFunctions.h"
 #include "DefaultSchemasResolver.h"

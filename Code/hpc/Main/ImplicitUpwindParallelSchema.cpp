@@ -1,3 +1,8 @@
+/**
+ * @file ImplicitUpwindParallelSchema.cpp
+ * @brief Implementation of methods for ImplicitUpwindParallelSchema.
+ */
+
 #include "ImplicitUpwindParallelSchema.h"
 #include "MPIWrapper.h"
 

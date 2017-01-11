@@ -1,3 +1,8 @@
+/**
+ * @file CrankNicolsonParallelSchema.cpp
+ * @brief Implementation of methods for CrankNicolsonParallelSchema.
+ */
+
 #include "CrankNicolsonParallelSchema.h"
 #include "Constants.h"
 #include "MPIWrapper.h"
@@ -15,7 +20,7 @@ void CrankNicolsonParallelSchema::setUpLUDecomposition(double a, double b, doubl
 		u[i + 1] = c;
 	}
 	l[N - 1] = b / d[N - 1];
-	
+
 	if (coreId != coresQuantity - 1)
 	{
 		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_D, &l[N - 1], 1);
@@ -48,7 +53,7 @@ std::vector<double>* CrankNicolsonParallelSchema::apply(std::vector<double>* pre
 
 	q[0] = previousWave->at(0) - c * (previousWave->at(1) - leftBound);
 	q[n - 1] = previousWave->at(n - 1) - c * (rightBound - previousWave->at(n - 2));
-	
+
 	return this->Substitution(&(q)[0]);
 }
 
@@ -86,7 +91,7 @@ double * CrankNicolsonParallelSchema::ForwardSubstitution(double *q)
 		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_Y, &y[N - 1], 1);
 		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_L, &l[N - 1], 1);
 	}
-	
+
 	return y;
 }
 

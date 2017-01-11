@@ -1,3 +1,8 @@
+/**
+ * @file CrankNicolsonSchema.cpp
+ * @brief Implementation of methods for CrankNicolsonSchema.
+ */
+
 #include "CrankNicolsonSchema.h"
 
 void CrankNicolsonSchema::createLUDecompositionFrom(double a, double b, double c)
