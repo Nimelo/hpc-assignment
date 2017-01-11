@@ -61,16 +61,16 @@ std::vector<double>* CrankNicolsonParallelSchema::apply(std::vector<double>* pre
 	MPIWrapper::sendRecvDoubles(sendRightCoreId, 1, &previousWave->at(n - 1), TAG_RIGHT, recvRightCoreId, 1, &rightBound, TAG_RIGHT);
 	MPIWrapper::sendRecvDoubles(sendLeftCoreId, 1, &previousWave->at(0), TAG_LEFT, recvLeftCoreId, 1, &leftBound, TAG_LEFT);
 
-	previousWave->at(0) = leftBound;
-	previousWave->at(n - 1) = rightBound;
+	//previousWave->at(0) = leftBound;
+	//previousWave->at(n - 1) = rightBound;
 
 	for (unsigned int i = 1; i < previousWave->size() - 1; i++)
 	{
 		q[i] = previousWave->at(i) - c * (previousWave->at(i + 1) - previousWave->at(i - 1));
 	}
 
-	q[0] = previousWave->at(0) - c * (previousWave->at(1) - rightBound/*previousWave->at(n - 1)*/);
-	q[n - 1] = previousWave->at(n - 1) - c * (leftBound/*previousWave->at(0)*/ - previousWave->at(n - 2));
+	q[0] = previousWave->at(0) - c * (previousWave->at(1) - leftBound/*previousWave->at(n - 1)*/);
+	q[n - 1] = previousWave->at(n - 1) - c * (rightBound/*previousWave->at(0)*/ - previousWave->at(n - 2));
 	std::vector<double> * result = new std::vector<double>(n);
 	ThomasAlgorithm(n, -c, 1.0e0, c, &(*result)[0], &(q)[0]);
 	return result;
