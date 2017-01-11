@@ -16,8 +16,13 @@
 */
 class CrankNicolsonSchema : public AbstractSchema
 {
+protected:
+	double * l;
+	double * u;
+	double * d;
 public:
 
+	void createLUDecompositionFrom(double a, double b, double c);
 	/**
 	* Checks the stability condition for given parameters.
 	* @throw StabilityConditionException if calculated coefficient (CFL) is negative.
@@ -42,6 +47,8 @@ public:
 	*/
 	CrankNicolsonSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt);
 
+	~CrankNicolsonSchema();
+
 	/**
 	* Shifts wave by 2uT
 	* @param previousWave wave for which post action will be applied.
@@ -50,7 +57,7 @@ public:
 	*/
 	virtual std::vector<double> * postApplyAction(std::vector<double> * previousWave, double t);
 
-	void ThomasAlgorithm(int N, double b, double a, double c, double *x, double *q);
+	std::vector<double> * CrankNicolsonSchema::ForwardAndBackWardSubstition(double *q);
 
 };
 

@@ -23,11 +23,10 @@ private:
 	long TAG_Z = 3;
 	long TAG_Y = 4;
 	long TAG_L = 5;
+protected:
+	double * l, * u, * d;
+	void setUpLUDecomposition(double a, double b, double c);
 public:
-	void sendLeftBound(double value);
-	double recvLeftBound(double bound);
-	void sendRightBound(double value);
-	double recvRightBound(double bound);
 	/**
 	* Checks the stability condition for given parameters.
 	* @throw StabilityConditionException if calculated coefficient (CFL) is negative.
@@ -60,7 +59,11 @@ public:
 	*/
 	virtual std::vector<double> * postApplyAction(std::vector<double> * previousWave, double t);
 
-	void ThomasAlgorithm(int N, double b, double a, double c, double *x, double *q);
+	~CrankNicolsonParallelSchema();
+
+	std::vector<double> * Substitution(double *q);
+	double * ForwardSubstitution(double *q);
+	std::vector<double> * BackwardSubstitution(double *y);
 };
 
 #endif
