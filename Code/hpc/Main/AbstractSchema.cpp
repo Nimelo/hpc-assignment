@@ -5,13 +5,13 @@
 
 #include "AbstractSchema.h"
 
-AbstractSchema::AbstractSchema(long coreId, long coresQuantity, double a, double dx, double dt)
-	: MPIObject(coreId, coresQuantity), accelertaion(a), deltaT(dt), deltaX(dx)
+AbstractSchema::AbstractSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt)
+	: MPIObject(coreId, coresQuantity), accelertaion(a), deltaT(dt), deltaX(dx), numberOfPoints(numberOfPoints)
 {
 	cfl = accelertaion * deltaT / deltaX;
 }
 
-AbstractSchema::~AbstractSchema()
+ AbstractSchema::~AbstractSchema()
 {
 
 }

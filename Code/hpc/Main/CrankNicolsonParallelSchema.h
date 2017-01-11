@@ -45,11 +45,12 @@ public:
 	* Explicitly defined constructor.
 	* @param coreId Current core id.
 	* @param coresQuantity Quantity of reserved cores.
+	* @param numberOfPoints Number of points.
 	* @param a Acceleration.
 	* @param dx Delta x.
 	* @param dt Delta t.
 	*/
-	CrankNicolsonParallelSchema(long coreId, long coresQuantity, double a, double dx, double dt);
+	CrankNicolsonParallelSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt);
 
 	/**
 	* Shifts wave by 2uT

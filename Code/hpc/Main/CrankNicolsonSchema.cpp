@@ -10,7 +10,7 @@ std::vector<double>* CrankNicolsonSchema::apply(std::vector<double>* previousWav
 	double c = 0.25 * cfl;
 	unsigned int n = previousWave->size();
 	std::vector<double> q(previousWave->size());
-
+	
 	for (unsigned int i = 1; i < previousWave->size() - 1; i++)
 	{
 		q[i] = previousWave->at(i) - c * (previousWave->at(i + 1) - previousWave->at(i - 1));
@@ -22,41 +22,6 @@ std::vector<double>* CrankNicolsonSchema::apply(std::vector<double>* previousWav
 	std::vector<double> * newSolution = new std::vector<double>(n);
 	ThomasAlgorithm(n, -c, 1.0e0, c, &(*newSolution)[0], &q[0]);
 	return newSolution;
-	//return ThomasAlgorithm_per(n, -c, 1.0e0, c, q);
-}
-
-std::vector<double> * CrankNicolsonSchema::ThomasAlgorithm_per(unsigned int N, double b, double a, double c, std::vector<double> & points)
-{
-	double *x = new double[N];
-	int i;
-	double *x1, *x2, *q2, *q;
-
-	x1 = new double[N - 1];
-	x2 = new double[N - 1];
-	q2 = new double[N - 1];
-	q = &points[0];
-
-	/* Prepare secondary q */
-	for (i = 0; i<N - 1; i++)
-		q2[i] = 0.0;
-	q2[0] = -b;
-	q2[N - 2] = -c;
-
-	ThomasAlgorithm(N - 1, b, a, c, x1, q);
-	ThomasAlgorithm(N - 1, b, a, c, x2, q2);
-
-	x[N - 1] = (q[N - 1] - c*x1[0] - b*x1[N - 2]) /
-		(a + c*x2[0] + b*x2[N - 2]);
-
-	for (i = 0; i<N - 1; i++)
-		x[i] = x1[i] + x2[i] * x[N - 1];
-
-	delete[] x1;
-	delete[] x2;
-	delete[] q2;
-	std::vector<double> * result = new std::vector<double>(x, x + N);
-	delete[] x;
-	return result;
 }
 
 void CrankNicolsonSchema::ThomasAlgorithm(int N, double b, double a, double c, double *x, double *q) {
@@ -96,8 +61,8 @@ void CrankNicolsonSchema::ThomasAlgorithm(int N, double b, double a, double c, d
 	return;
 }
 
-CrankNicolsonSchema::CrankNicolsonSchema(long coreId, long coresQuantity, double a, double dx, double dt)
-	: AbstractSchema(coreId, coresQuantity, a, dx, dt)
+CrankNicolsonSchema::CrankNicolsonSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, numberOfPoints, a, dx, dt)
 {
 }
 

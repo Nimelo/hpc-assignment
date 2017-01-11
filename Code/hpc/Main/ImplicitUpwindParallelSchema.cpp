@@ -19,8 +19,8 @@ void ImplicitUpwindParallelSchema::sendUpperBound(long coreId, long coresQuantit
 	}
 }
 
-ImplicitUpwindParallelSchema::ImplicitUpwindParallelSchema(long coreId, long coresQuantity, double a, double dx, double dt)
-	: AbstractSchema(coreId, coresQuantity, a , dx, dt)
+ImplicitUpwindParallelSchema::ImplicitUpwindParallelSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, numberOfPoints, a, dx, dt)
 {
 }
 

@@ -28,7 +28,7 @@ Discretizator * DiscretizatorsFactory::manufacture(Configuration * configuration
 		configuration->acceleration,
 		(long)configuration->numberOfPoints,
 		AnalyticalFunctions::expFunction,
-		dsr.resolve(configuration->schema, coreId, coresQuantity, configuration->acceleration, dx, dt),
+		dsr.resolve(configuration->schema, coreId, coresQuantity, configuration->numberOfPoints, configuration->acceleration, dx, dt),
 		configuration->timeLevels,
 		dt,
 		dx

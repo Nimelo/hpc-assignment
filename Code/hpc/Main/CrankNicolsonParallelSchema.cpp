@@ -1,8 +1,6 @@
 #include "CrankNicolsonParallelSchema.h"
 #include "Constants.h"
 #include "MPIWrapper.h"
-#include <mpi.h>
-#include <iostream>
 
 void CrankNicolsonParallelSchema::sendLeftBound(double value)
 {
@@ -202,16 +200,6 @@ void CrankNicolsonParallelSchema::ThomasAlgorithm(int N, double b, double a, dou
 	for (i = N - 2; i >= 0; i--)
 		x[i] = (y[i] - u[i] * x[i + 1]) / d[i];
 
-		for (size_t i = 0; i < coresQuantity; i++) {
-			if (coreId == i) {
-				std::cout << "coreId " << coreId <<std::endl;
-				std::cout << "x\n";
-				for (size_t j = 0; j < N; j++) {
-					std::cout << x[j] << std::endl;
-				}
-			}
-			//MPI_Barrier(MPI_COMM_WORLD);
-		}
 	// send
 	if (coreId != 0)
 	{
@@ -225,8 +213,8 @@ void CrankNicolsonParallelSchema::ThomasAlgorithm(int N, double b, double a, dou
 	return;
 }
 
-CrankNicolsonParallelSchema::CrankNicolsonParallelSchema(long coreId, long coresQuantity, double a, double dx, double dt)
-	: AbstractSchema(coreId, coresQuantity, a, dx, dt)
+CrankNicolsonParallelSchema::CrankNicolsonParallelSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, numberOfPoints, a, dx, dt)
 {
 }
 

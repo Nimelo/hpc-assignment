@@ -29,12 +29,13 @@ public:
 	 * @param key Key for schema.
 	 * @param coreId Current core id.
 	 * @param coresQuantity Quantity of reserved cores.
+	 * @param numberOfPoints Number of points.
 	 * @param a Acceleration.
 	 * @param dx Delta X.
 	 * @param dt Delta T.
 	 * @return Schema corresponding to the given key.
 	 */
-	AbstractSchema * resolve(std::string key, long coreId, long coresQuantity, double a, double dx, double dt);
+	AbstractSchema * resolve(std::string key, long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt);
 };
 
 #endif

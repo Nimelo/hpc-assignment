@@ -5,8 +5,8 @@
  
 #include "UpwindExplicitSchema.h"
 
-UpwindExplicitSchema::UpwindExplicitSchema(long coreId, long coresQuantity, double a, double dx, double dt)
-	: AbstractSchema(coreId, coresQuantity, a, dx, dt)
+UpwindExplicitSchema::UpwindExplicitSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt)
+	: AbstractSchema(coreId, coresQuantity, numberOfPoints, a, dx, dt)
 {
 }
 
