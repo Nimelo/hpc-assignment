@@ -66,3 +66,11 @@ void MPIWrapper::receiveDoublesFromCore(long coreId, int tag, long quantity, dou
 
 	#endif
 }
+
+void MPIWrapper::sendRecvDoubles(long sCoreId, long sQuantity, double * sBuff, int sTag, long rCoreId, long rQuantity, double * rBuff, int rTag)
+{
+	#ifdef MPI
+		MPI_Status status;
+		MPI_Sendrecv(sBuff, sQuantity, MPI_DOUBLE, sCoreId, sTag, rBuff, rQuantity, MPI_DOUBLE, rCoreId, rTag, MPI_COMM_WORLD, &status);
+	#endif
+}

@@ -19,6 +19,9 @@ class CrankNicolsonParallelSchema : public AbstractSchema
 private:
 	long TAG_LEFT = 0;
 	long TAG_RIGHT = 1;
+	long TAG_D = 2;
+	long TAG_Z = 3;
+	long TAG_Y = 4;
 public:
 	void sendLeftBound(double value);
 	double recvLeftBound(double bound);
@@ -56,8 +59,6 @@ public:
 	virtual std::vector<double> * postApplyAction(std::vector<double> * previousWave, double t);
 
 	void ThomasAlgorithm(int N, double b, double a, double c, double *x, double *q);
-
-	std::vector<double> * ThomasAlgorithm_per(unsigned int N, double b, double a, double c, std::vector<double> & points);
 };
 
 #endif

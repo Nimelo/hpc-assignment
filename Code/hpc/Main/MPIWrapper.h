@@ -16,6 +16,7 @@ public:
 	static void sendDoublesToCore(long coreId, int tag, double * doubles, long quantity);
 	static double receiveSingleDoubleFromCore(long coreId, int tag);
 	static void receiveDoublesFromCore(long coreId, int tag, long quantity, double * storage);
+	static void sendRecvDoubles(long sCoreId, long sQuantity, double * sBuff, int sTag, long rCoreId, long rQuantity, double * rBuff, int rTag);
 };
 
 #endif

@@ -19,7 +19,10 @@ std::vector<double>* CrankNicolsonSchema::apply(std::vector<double>* previousWav
 	q[0] = previousWave->at(0) - c * (previousWave->at(1) - previousWave->at(n - 1));
 	q[n-1] = previousWave->at(n-1) - c * (previousWave->at(0) - previousWave->at(n - 2));
 
-	return ThomasAlgorithm_per(n, -c, 1.0e0, c, q);
+	std::vector<double> * newSolution = new std::vector<double>(n);
+	ThomasAlgorithm(n, -c, 1.0e0, c, &(*newSolution)[0], &q[0]);
+	return newSolution;
+	//return ThomasAlgorithm_per(n, -c, 1.0e0, c, q);
 }
 
 std::vector<double> * CrankNicolsonSchema::ThomasAlgorithm_per(unsigned int N, double b, double a, double c, std::vector<double> & points)

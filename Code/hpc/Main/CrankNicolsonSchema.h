@@ -52,6 +52,7 @@ public:
 	void ThomasAlgorithm(int N, double b, double a, double c, double *x, double *q);
 
 	std::vector<double> * ThomasAlgorithm_per(unsigned int N, double b, double a, double c, std::vector<double> & points);
+
 };
 
 #endif

@@ -52,54 +52,27 @@ std::vector<double>* CrankNicolsonParallelSchema::apply(std::vector<double>* pre
 	double c = 0.25 * cfl;
 	unsigned int n = previousWave->size();
 	std::vector<double> q(previousWave->size());
+	double leftBound = 0, rightBound = 0;
 
-	double leftBound = this->recvLeftBound(previousWave->at(n - 1));
-	double rightBound = this->recvRightBound(previousWave->at(0));
-	this->sendLeftBound(previousWave->at(0));
-	this->sendRightBound(previousWave->at(n - 1));
+	long sendRightCoreId = (coreId + 1) % coresQuantity;
+	long recvRightCoreId = (coreId - 1 + coresQuantity) % coresQuantity;
+	long sendLeftCoreId = (coreId - 1 + coresQuantity) % coresQuantity;
+	long recvLeftCoreId = (coreId + 1) % coresQuantity;
+	MPIWrapper::sendRecvDoubles(sendRightCoreId, 1, &previousWave->at(n - 1), TAG_RIGHT, recvRightCoreId, 1, &rightBound, TAG_RIGHT);
+	MPIWrapper::sendRecvDoubles(sendLeftCoreId, 1, &previousWave->at(0), TAG_LEFT, recvLeftCoreId, 1, &leftBound, TAG_LEFT);
+
+	previousWave->at(0) = leftBound;
+	previousWave->at(n - 1) = rightBound;
 
 	for (unsigned int i = 1; i < previousWave->size() - 1; i++)
 	{
 		q[i] = previousWave->at(i) - c * (previousWave->at(i + 1) - previousWave->at(i - 1));
 	}
 
-	q[0] = previousWave->at(0) - c * (previousWave->at(1) - leftBound/*previousWave->at(n - 1)*/);
-	q[n - 1] = previousWave->at(n - 1) - c * (rightBound/*previousWave->at(0)*/ - previousWave->at(n - 2));
-
-	return ThomasAlgorithm_per(n, -c, 1.0e0, c, q);
-}
-
-std::vector<double> * CrankNicolsonParallelSchema::ThomasAlgorithm_per(unsigned int N, double b, double a, double c, std::vector<double> & points)
-{
-	double *x = new double[N];
-	int i;
-	double *x1, *x2, *q2, *q;
-
-	x1 = new double[N - 1];
-	x2 = new double[N - 1];
-	q2 = new double[N - 1];
-	q = &points[0];
-
-	/* Prepare secondary q */
-	for (i = 0; i < N - 1; i++)
-		q2[i] = 0.0;
-	q2[0] = -b;
-	q2[N - 2] = -c;
-
-	ThomasAlgorithm(N - 1, b, a, c, x1, q);
-	ThomasAlgorithm(N - 1, b, a, c, x2, q2);
-
-	x[N - 1] = (q[N - 1] - c*x1[0] - b*x1[N - 2]) /
-		(a + c*x2[0] + b*x2[N - 2]);
-
-	for (i = 0; i < N - 1; i++)
-		x[i] = x1[i] + x2[i] * x[N - 1];
-
-	delete[] x1;
-	delete[] x2;
-	delete[] q2;
-	std::vector<double> * result = new std::vector<double>(x, x + N);
-	delete[] x;
+	q[0] = previousWave->at(0) - c * (previousWave->at(1) - rightBound/*previousWave->at(n - 1)*/);
+	q[n - 1] = previousWave->at(n - 1) - c * (leftBound/*previousWave->at(0)*/ - previousWave->at(n - 2));
+	std::vector<double> * result = new std::vector<double>(n);
+	ThomasAlgorithm(n, -c, 1.0e0, c, &(*result)[0], &(q)[0]);
 	return result;
 }
 
@@ -113,7 +86,16 @@ void CrankNicolsonParallelSchema::ThomasAlgorithm(int N, double b, double a, dou
 	y = new double[N];
 
 	/* LU Decomposition */
-	d[0] = a;
+	if (coreId == 0)
+	{
+		d[0] = a;
+	}
+	else 
+	{
+		d[0] = MPIWrapper::receiveSingleDoubleFromCore(coreId - 1, TAG_D);
+	}
+
+	//d[0] = a; // get
 	u[0] = c;
 	for (i = 0; i < N - 2; i++) {
 		l[i] = b / d[i];
@@ -123,15 +105,50 @@ void CrankNicolsonParallelSchema::ThomasAlgorithm(int N, double b, double a, dou
 	l[N - 2] = b / d[N - 2];
 	d[N - 1] = a - l[N - 2] * u[N - 2];
 
+	// send 
+	if (coreId != coresQuantity - 1)
+	{
+		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_D, &d[N - 1], 1);
+	}
+
 	/* Forward Substitution [L][y] = [q] */
-	y[0] = q[0];
+	if (coreId == 0)
+	{
+		y[0] = q[0];
+	}
+	else
+	{
+		y[0] = MPIWrapper::receiveSingleDoubleFromCore(coreId - 1, TAG_Y);
+	}
+
+	//y[0] = q[0]; // get
 	for (i = 1; i < N; i++)
 		y[i] = q[i] - l[i - 1] * y[i - 1];
 
+	// send 
+	if (coreId != coresQuantity - 1)
+	{
+		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_Y, &y[N - 1], 1);
+	}
+
 	/* Backward Substitution [U][x] = [y] */
-	x[N - 1] = y[N - 1] / d[N - 1];
+	if (coreId == coresQuantity - 1)
+	{
+		x[N - 1] = y[N - 1] / d[N - 1];
+	}
+	else
+	{
+		x[N - 1] = MPIWrapper::receiveSingleDoubleFromCore(coreId + 1, TAG_Z);
+	}
+	x[N - 1] = y[N - 1] / d[N - 1]; // get
 	for (i = N - 2; i >= 0; i--)
 		x[i] = (y[i] - u[i] * x[i + 1]) / d[i];
+
+	// send 
+	if (coreId != 0)
+	{
+		MPIWrapper::sendDoublesToCore(coreId - 1, TAG_Z, &x[0], 1);
+	}
 
 	delete[] l;
 	delete[] u;
