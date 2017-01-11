@@ -22,6 +22,7 @@ private:
 	long TAG_D = 2;
 	long TAG_Z = 3;
 	long TAG_Y = 4;
+	long TAG_L = 5;
 public:
 	void sendLeftBound(double value);
 	double recvLeftBound(double bound);

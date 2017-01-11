@@ -1,5 +1,6 @@
 #include "MPIWrapper.h"
-
+#define MPI
+#include <mpi.h>
 double MPIWrapper::getTime()
 {
 		double value = 0.0;
