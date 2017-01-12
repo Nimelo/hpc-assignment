@@ -1,5 +1,59 @@
 \chapter{General approach} \label{chp:general-approach}
-
+	Finite difference methods can be described in different ways in many books. This report base on explanation of C. A. J. Fletcher in Chapter 3.5 in Computational Techniques for Fluid Dynamics \cite{bib:fletcher}. The basis for the finite difference method is the construction of a discrete grid, the replacement of the continuous derivatives in the governing partial equations with equivalent finite difference expressions. Mentioned transformation is presented in Figure \ref{fig:schematicOfFDM} base on C. A. J. Fletcher schematic in \cite{bib:fletcher}[p. 64--65].
+	\begin{figure}[!htbp]
+		\centering
+			\begin{tikzpicture}
+				% Place nodes
+				\node [block] (setUpGrid) {Set up grid};
+				\node [block, right of=setUpGrid, align=center] (initDependentVars) 
+				{
+					Initialise \\ 
+					dependent \\ 
+					vairables
+				};
+				\node [block, right =1cm of initDependentVars, align=center] (construct)
+				{
+					Construct finite difference \\
+					analogue of P.D.E and B.C.s
+				};			
+				\node [block, below of=construct, align=center] (forEach)
+				{
+					For each interior grid point (j, n) \\
+					evaluate algorithm to give $T_j^{n+1}$
+				};			
+				\node [block, left=1cm of forEach, below of=initDependentVars] (timeStep) 
+				{
+					$t_{n+1} = t_n + \Delta t$
+				};
+				\node [block, below of=timeStep, align=center] (adjust) 
+				{
+					Adjust (if necessary) \\
+					boundary values \\
+					$T_1^{n+1}$ and $T_j^{n+1}$
+				};
+				\node [decision, left=1cm of adjust] (final) {Final time reached};
+				\node [block, below of=final] (solution) {Solution};
+				% Draw edges
+				\path [line] (setUpGrid) -- (initDependentVars);
+				\path [line] (initDependentVars) -- (construct);
+				\path [line] (construct) -- (forEach);
+				\path [line] (timeStep) -- (forEach);
+				\path [line] (forEach) |- (adjust);
+				\path [line] (adjust) -- (final);
+				\path [line] (final) |- node[above, midway] {no} (timeStep);
+				\path [line] (final) -- node[right] {yes} (solution);
+			\end{tikzpicture}
+		\caption{Schematic of the finite difference solution process.}
+		\label{fig:schematicOfFDM}
+	\end{figure}
+	
+	General approach mentioned before is a core for algorithm for each of discussed schemes. Although presented on Figure \ref{fig:schematicOfFDM} describes and works only for serial algorithms. This schematic does not include any additional communication or constraints that are used in parallel computing. However it is a base for all numerical algorithms working on a grid and will be used to understand and devise a way to parallelize numerical methods mentioned in Chapter \ref{chp:introduction}.
+	
+	In a serial approach initialization of the grid and dependent variables is made in a single processor. It is highly clear that mentioned operations can be split among used processors leaving dependent variables. This devision introduces new dependency depending on the scheme \gls{stencil}. Iteration through all the points that consist the grid can be in such approach also parallelized, but there is a additional communication needed between processors depending on the \gls{stencil}. Noteworthy is fact that previous processor is always behind in terms of the calculated time step, due to linear dependency of the grid. Although after first full cycle (iteration through grid) all the processors work simultaneously. After reaching desired time main processor should gather scattered grid and save the result, which requires a lot of communication.
+	
+	Proposed parallelization approach for numerical methods will be checked and analyzed more precisely in next sections (\ref{s:general-approach:analysis-of-the-schemes} and \ref{s:general-approach:devise-a-way-to-parallelize}).
+	
+	
 \input{sections/analysis-of-the-schemes.tex}
 
 \input{sections/devise-a-way-to-parallelize.tex}
