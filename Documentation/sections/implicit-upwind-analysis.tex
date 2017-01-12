@@ -1,4 +1,4 @@
-\section{Implicit upwind scheme} \label{s:general-approach:implicit-upwind-analysis}
+\subsection{Implicit upwind scheme} \label{s:general-approach:implicit-upwind-analysis}
 	This formulation uses the \gls{FTBS} method of finite differencing in the approximation of the \gls{PDE} in \eqref{eq:advection-equation}, therefore giving:
 	\begin{equation} \label{eq:implicitUpwind_first}
 		\frac{f_i^{n+1} - f_i^n}{\Delta t} + u\frac{f_i^{n+1} - f_{i-1}^{n+1}}{\Delta x} = \mathcal{O}(\Delta t, \Delta x)

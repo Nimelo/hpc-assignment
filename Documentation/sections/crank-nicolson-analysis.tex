@@ -1,0 +1,75 @@
+\subsection{Crank-Nicolson scheme} \label{s:general-approach:crank-nicolson-analysis}
+	Based on formulations given by S. Scott Collis in \cite{bib:introduction} and George Em Karniadakis and Robert M. Kirby II in \cite{bib:mpi} for Crank--Nicolson scheme to solve \gls{advection-equation} can be described as:
+	\begin{equation} \label{eq:crank-nicolson}
+		\frac{f_i^{n+1} - f_i^n}{\Delta t} +  u \frac{1}{2} \bigg(\frac{f_{i+1}^{n+1} - f_{i-1}^{n+1}}{2\Delta x} + \frac{f_{i+1}^{n} - f_{i-1}^n}{2\Delta x}\bigg)= \mathcal{O}(\Delta t, \Delta x)
+	\end{equation}
+	Equation \eqref{eq:crank-nicolson} can be transformed in a following fashion to separate knowns and unknowns:
+	\begin{equation} \label{eq:crank-nicolson:solution}
+		\frac{C}{4} f_{i-1}^n + f_{i}^n - \frac{C}{4} f_{i+1}^n = -\frac{C}{4} f_{i-1}^{n+1} + f_{i}^{n+1} + \frac{C}{4} f_{i+1}^{n+1}
+	\end{equation}
+	where $C$ is \gls{CFL} number introduced earlier \eqref{eq:cfl}. Assuming following dependencies:
+	\begin{equation}
+		\begin{split}
+			\alpha &= \frac{C}{4}\\
+			 k_i &= \frac{C}{4} f_{i-1}^n + f_{i}^n - \frac{C}{4} f_{i+1}^n
+		\end{split}
+	\end{equation}
+	equation \ref{eq:crank-nicolson:solution} drives us to solve following linear system of form $Af^{n+1} = f^n$ by Thomas algorithm:		
+	\begin{equation}
+		\begin{bmatrix}
+			1 		& \alpha &		  &  	 &		&\\
+			-\alpha & 1 	 & \alpha &  	 &		&\\ 
+					& \ddots & \ddots &  	 &		&\\
+					&		 &-\alpha & 1 	 &\alpha&\\
+					& 		 & 		  &-\alpha&	1	&\\					
+		\end{bmatrix} 
+		\times
+		\begin{bmatrix}
+			f_1^{n+1} \\
+			f_2^{n+1} \\
+			\vdots	\\
+			f_{N-1}^{n+1}\\
+			f_{N}^{n+1}\\
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			k_0 \\
+			k_1 \\
+			\vdots	\\
+			k_{N-1} \\
+			k_{N} \\
+		\end{bmatrix}
+	\end{equation}		
+	Geometric arrangement of a nodal group that relate to the points of interest used by this scheme is shown in Figure \ref{fig:stencil:crank-nicolson}.
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=1.5]
+			\draw[dotted] (-4,0.5) -- (4,0.5);
+			\draw[dotted] (-4,-0.5) -- (4,-0.5);
+			\node[black] at (-4.5,1) {$n+1$};
+			\node[black] at (-4.5,0) {$n$};
+			
+			\node[black] at (-1,-1) {$i-1$};
+			\node[black] at (0,-1) {$i$};
+			\node[black] at (1,-1) {$i+1$};
+			
+			\stencilpt[fill=blue]{0,0}{ij}{};
+			\stencilpt[fill=blue]{-1,0}{i-1j}{};			
+			\stencilpt[fill=blue]{1,0}{i+1j}{};
+			
+			\stencilpt[fill=green]{0,1}{ij+1}{};
+			\stencilpt[fill=blue]{-1,1}{i-1j+1}{};			
+			\stencilpt[fill=blue]{1,1}{i+1j+1}{};
+			
+			\draw (i+1j) -- (ij);
+			\draw (i-1j) -- (ij);
+			
+			\draw [->](ij) -- (ij+1);	
+			\draw [->](i+1j+1) -- (ij+1);
+			\draw [->](i-1j+1) -- (ij+1);
+		\end{tikzpicture}
+		\caption{Graphical representation of the explicit upwind scheme dependencies.}
+		\label{fig:stencil:crank-nicolson}
+	\end{figure}
+	Described earlier scheme is first-order accurate both in space and time. This method is unconditionally stable for: $C > 0$.
+	
