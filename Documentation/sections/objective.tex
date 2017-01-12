@@ -1,0 +1,22 @@
+\section{Objective} \label{s:introduction:objective}
+	The main objective of the assignment is apply distributed memory parallel programing techniques, implement, examine and discuss about three numerical schemes (\emph{implicit upwind}, \emph{explicit upwind} and \emph{Crank-Nicolson}) used to solve simple \gls{advection-equation} which is described as follows:	
+	\begin{equation} \label{eq:advection-equation}
+	\frac{\partial f}{\partial t} +  u\frac{\partial f}{\partial x} = 0
+	\end{equation}
+	in a domain $x \in [-50,50]$ with $u = 1.75$ and following initial/boundary conditions:	
+	\begin{equation} \label{eq:boundary-conditions}
+		\begin{split}
+			f(x, 0) &= \frac{1}{2} exp(-x^2) \\
+			f(-50, t) &= 0 \\
+			f(50, t) &= 0
+		\end{split}
+	\end{equation}
+	The analytical solutions for this initial conditions are given by:
+	\begin{equation} \label{eq:analytical-solution}
+			\begin{split}
+				f(x, t) = \frac{1}{2} exp \bigg( -(x - 1.75t)^2 \bigg).
+			\end{split}
+	\end{equation}
+	
+	Solution should be implemented in \emph{C/C++/FORTRAN} and coupled with \gls{MPI}. Trials should be performed on university \gls{super-computer} -- \gls{astral}. A way to parallelize the above numerical methods should be described. Comparison of numerical solutions obtained for both serial and parallel programs should be made with analytical solution. Cost of the communication in the boundary exchange and the cost of computing a time-step for each process all should be included as well as performance of serial and parallel code in terms of practical trials. In the end replacement of linear equation set should be made in order to check the how good is current implementation.
+	
