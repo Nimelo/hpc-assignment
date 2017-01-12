@@ -1,0 +1,36 @@
+\section{Explicit upwind scheme} \label{s:general-approach:explicit-upwind-analysis}
+Formula that gives first-order accurate method for our problem is described by Klaus A. Hoffman and Steve T. Chiang in \cite{bib:hoffman}[p. 191 - 192] in Section 6.5 titled Applications to a Linear Problem, which looks as follows:
+\begin{equation} \label{eq:explicitUpwind}
+	\begin{split}
+		\frac{f_i^{n+1} - f_i^n}{\Delta t} + u\frac{f_i^n - f_{i-1}^n}{\Delta x} = \mathcal{O}(\Delta t, \Delta x) \\
+		f_i^{n+1} = f_i^n - C(f_i^n - f_{i-1}^n) + \mathcal{O}(\Delta t^2, \Delta x \Delta t)
+	\end{split}
+\end{equation}
+where $C$ is \gls{CFL} number introduced earlier \eqref{eq:cfl}. Geometric arrangement of a nodal group that relate to the points of interest used by this scheme is shown in Figure \ref{fig:stencil:explicit-upwind}.
+\begin{figure}[!htbp]
+	\centering
+	\begin{tikzpicture}[scale=1.5]
+		\draw[dotted] (-4,0.5) -- (4,0.5);
+		\draw[dotted] (-4,-0.5) -- (4,-0.5);
+		\node[black] at (-4.5,1) {$n+1$};
+		\node[black] at (-4.5,0) {$n$};
+		
+		\node[black] at (-1,-1) {$i-1$};
+		\node[black] at (0,-1) {$i$};
+		\node[black] at (1,-1) {$i+1$};
+		
+		\stencilpt[fill=blue]{0,0}{ij}{};
+		\stencilpt[fill=blue]{-1,0}{i-1j}{};			
+		\stencilpt[dotted]{1,0}{i+1j}{};
+		
+		\stencilpt[fill=green]{0,1}{ij+1}{};
+		\stencilpt[dotted]{-1,1}{i-1j+1}{};			
+		\stencilpt[dotted]{1,1}{i+1j+1}{};
+		\draw (ij) -- (i-1j);
+		\draw [->](i-1j) -- (ij+1);
+		\draw [->](ij) -- (ij+1);	
+	\end{tikzpicture}
+	\caption{Graphical representation of the explicit upwind scheme dependencies.}
+	\label{fig:stencil:explicit-upwind}
+\end{figure}
+Described earlier scheme is first-order accurate both in space and time. This method is conditionally stable for: $C \in (0,1)$.

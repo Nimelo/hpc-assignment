@@ -1,1 +1,22 @@
 \section{Analysis of schemes} \label{s:general-approach:analysis-of-the-schemes}
+
+	This section is devoted to briefly introduce reader about formulations, \gls{stencil}s and stability conditions of used schemes. All the formulas use following dependency (\ref{eq:cfl}), also known as \gls{CFL} condition. In order to connect error of calculated norm 1 with a single point in grid formulation of this norm was changed and is explained in appendix \ref{s:appendix:norms:calcNorm1} by Formula \eqref{eq:calcNorm1}.	
+	\begin{equation} \label{eq:cfl}
+	C = u \frac{\Delta t}{\Delta x}
+	\end{equation} 	
+	where $C$ is the \gls{CFL} number. In initial parameters of \gls{advection-equation} \eqref{eq:advection-equation} give us $u > 0$ and $\Delta x$ is also greater than $0$ because it refers to amount of points in the grid, which cannot be negative and solution for zero points doesn't make sense. The last important parameter is $\Delta t$ which also should be greater than zero, because it is impossible to go back in time. The conclusion from Equation \eqref{eq:cfl} is that the \gls{CFL} should always be positive in conditions of considered in this report problem. There is a possibility to change this assumptions but, we will lose the ability to use the following equation $\Delta t = \frac{C\Delta x}{u}$.
+	
+	For all graphical, geometric arrangement of a nodal group that relate to the point of interest by using a numerical approximation routine in this report used is following notations:
+	
+	\begin{itemize}
+		\item blue nodes are points at time step $n$,
+		\item green nodes are points at time step $n+1$,
+		\item red nodes are points at time step $n+const$, where $const$ is a number,
+		\item directed lines show how relations between points of different time steps,
+		\item undirected lines show relations between points of same time step,
+		\item if scheme is multi-step there will be number corresponding to the step above directed line.
+	\end{itemize}
+
+\input{sections/explicit-upwind-analysis}
+\input{sections/implicit-upwind-analysis}
+\input{sections/crank-nicolson-analysis}

@@ -1,0 +1,82 @@
+\section{Implicit upwind scheme} \label{s:general-approach:implicit-upwind-analysis}
+	This formulation uses the \gls{FTBS} method of finite differencing in the approximation of the \gls{PDE} in \eqref{eq:advection-equation}, therefore giving:
+	\begin{equation} \label{eq:implicitUpwind_first}
+		\frac{f_i^{n+1} - f_i^n}{\Delta t} + u\frac{f_i^{n+1} - f_{i-1}^{n+1}}{\Delta x} = \mathcal{O}(\Delta t, \Delta x)
+	\end{equation}
+	The only known value of $f$ at $i$ is at time $n$. Mentioned dependency drives us to solve following linear equation set of form $Af^{n+1} = f^n$:		
+	\begin{equation}
+		\begin{bmatrix}
+			1+C & & & \\
+			-C & 1+C & & \\ 
+			& \ddots & \ddots \\
+			& & -C & 1+C \\					
+		\end{bmatrix} 
+		\times
+		\begin{bmatrix}
+			f_1^{n+1} \\
+			f_2^{n+1} \\
+			\vdots	\\
+			f_{N-1}^{n+1}\\
+		\end{bmatrix}
+		=
+		\begin{bmatrix}
+			f_1^{n} + C f_0^{n+1}\\
+			f_2^{n} \\
+			\vdots	\\
+			f_{N-1}^{n}\\
+		\end{bmatrix}
+	\end{equation} 			
+	where $N$ is number of grid points.
+	This method is first--order accurate both in time and space. We can observe that we do not have to solve it by using complicated algorithm. Matrix $A$ is bidiagonal diagonally-dominant, so although this schema is implicit we can solve it using forward or backward substitution described using formula \eqref{eq:implicitSubstitution}. This equation assumes that we know the boundary conditions for next time step -- $f_0^{n+1}$ and $f_N^{n+1}$.  Graphical interpretation of this method is shown in Figure \ref{fig:stencil:implicit-upwind}.
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=1.5]
+			\draw[dotted] (-4,0.5) -- (4,0.5);
+			\draw[dotted] (-4,-0.5) -- (4,-0.5);
+			\draw[dotted] (0.5, 2) -- (0.5, -1.5);
+			
+			\node[black] at (-1, 1.75) {$C>0$};
+			\node[black] at (2, 1.75) {$C<0$};
+			\node[black] at (-4.5,1) {$n+1$};
+			\node[black] at (-4.5,0) {$n$};
+			
+			\node[black] at (-2,-1) {$i-1$};
+			\node[black] at (-1,-1) {$i$};
+			\node[black] at (0,-1) {$i+1$};
+			
+			\node[black] at (1,-1) {$i-1$};
+			\node[black] at (2,-1) {$i$};
+			\node[black] at (3,-1) {$i+1$};
+			
+			\stencilpt[dotted]{-2,0}{i-2j}{};
+			\stencilpt[fill=blue]{-1,0}{i-1j}{};
+			\stencilpt[dotted]{0,0}{ij}{};
+			\stencilpt[dotted]{1,0}{i+1j}{};	
+			\stencilpt[fill=blue]{2,0}{i+2j}{};
+			\stencilpt[dotted]{3,0}{i+3j}{};
+			
+			\stencilpt[fill=blue]{-2,1}{i-2j+1}{};
+			\stencilpt[fill=green]{-1,1}{i-1j+1}{};
+			\stencilpt[dotted]{0,1}{ij+1}{};
+			\stencilpt[fill=green]{1,1}{i+1j+1}{};
+			\stencilpt[fill=blue]{2,1}{i+2j+1}{};
+			\stencilpt[dotted]{3,1}{i+3j+1}{};
+			
+			\draw (i-2j+1) -- (i-1j);
+			\draw [->](i-2j+1) -- (i-1j+1);
+			\draw [->](i-1j) -- (i-1j+1);
+			
+			\draw (i+2j) -- (i+2j+1);
+			\draw [->](i+2j+1) -- (i+1j+1);
+			\draw [->](i+2j) -- (i+1j+1);
+		\end{tikzpicture}
+		\caption{Graphical representation of the implicit upwind scheme dependencies.}
+		\label{fig:stencil:implicit-upwind}
+	\end{figure}
+	\begin{equation} \label{eq:implicitSubstitution}
+		\begin{split}
+			f_i^{n+1} = \frac{f_i^n + Cf_{i-1}^{n+1}}{1+C}\text{, for $i = 1,2,3,\ldots,N-1$ and $C>0$} \\
+			f_{i-1}^{n+1} = \frac{(1+C)f_i^{n+1} - f_i^{n+1}}{C}\text{, for $i = N, N-1, \ldots, 2$ and $C < 0$}
+		\end{split}
+	\end{equation}
+	This schema is stable for $C \in (-\infty, -1) \cup (0, \infty)$, so in terms of assignment ($C>0$) scheme is unconditionally stable. 

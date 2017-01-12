@@ -1,0 +1,6 @@
+\section{Calculations of norm 1} \label{s:appendix:norms:calcNorm1}
+	Comparison of norm 1 between two vectors of different sizes is no appropriate way to get transparent view at error. In order to get error related to the single point in a grid norm 1 is calculated in a following way:
+	\begin{equation} \label{eq:calcNorm1}
+		norm_1=\frac{\sum_{i=1}^{N}|analytical_i - numerical_i|}{N}
+	\end{equation}
+	where $analytical$ is analytical solution, $numerical$ is numerical solution and $N$ is number of points in grid. Following formula ensure different value of error for same relative error of a vector.
