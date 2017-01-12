@@ -1,3 +1,8 @@
+/**
+ * @file CrankNicolsonSchema.h
+ * @brief Declaration of methods for CrankNicolsonSchema.
+ */
+
 #ifndef __H_CRANK_NICOLSON_SCHEMA
 #define __H_CRANK_NICOLSON_SCHEMA
 
@@ -17,11 +22,29 @@
 class CrankNicolsonSchema : public AbstractSchema
 {
 protected:
+	/*
+	 * Array l.
+	 */
 	double * l;
+	
+	/*
+	 * Array u.
+	 */
 	double * u;
+
+	/*
+	 * Array d.
+	 */
 	double * d;
 public:
 
+	/*
+	 * Performs LU Decomposition for given parameters, which are elements in tridiagonal matrix.
+	 * Sets the calculated values to l, u, d arrays.
+	 * @param a Second diagonal value.
+	 * @param b First diagonal value.
+	 * @param c Third diagonal value.
+	 */
 	void createLUDecompositionFrom(double a, double b, double c);
 	/**
 	* Checks the stability condition for given parameters.
@@ -47,6 +70,9 @@ public:
 	*/
 	CrankNicolsonSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt);
 
+	/*
+	 * Default destructor. Deallocated l, u, d.
+	 */
 	~CrankNicolsonSchema();
 
 	/**
@@ -57,8 +83,12 @@ public:
 	*/
 	virtual std::vector<double> * postApplyAction(std::vector<double> * previousWave, double t);
 
-	std::vector<double> * CrankNicolsonSchema::ForwardAndBackWardSubstition(double *q);
-
+	/*
+	 * Performs substitusion (backward and forward) in order to solve linear equation set stored in l,u,d and given q using Thomas algorithm.
+	 * @param q Array of knowns.
+	 * @return Vector of solution.
+	 */
+	std::vector<double> * ForwardAndBackWardSubstition(double *q);
 };
 
 #endif

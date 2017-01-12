@@ -1,3 +1,8 @@
+/**
+ * @file ParallelDiscretizator.cpp
+ * @brief Implementation of methods for ParallelDiscretizator.
+ */
+
 #include <algorithm>
 #include <vector>
 #include <iostream>

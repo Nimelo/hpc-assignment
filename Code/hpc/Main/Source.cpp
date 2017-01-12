@@ -1,3 +1,8 @@
+/**
+ * @file Source.cpp
+ * @brief Main program flow.
+ */
+
 #include <iostream>
 #include <fstream>
 

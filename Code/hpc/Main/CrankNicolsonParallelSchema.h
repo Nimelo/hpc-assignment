@@ -1,3 +1,8 @@
+/**
+ * @file CrankNicolsonParallelSchema.h
+ * @brief Declaration of methods for CrankNicolsonParallelSchema.
+ */
+
 #ifndef __H_CRANK_NICOLSON_PARALLEL_SCHEMA
 #define __H_CRANK_NICOLSON_PARALLEL_SCHEMA
 
@@ -8,7 +13,7 @@
 #include "StabilityConditionException.h"
 
 /**
-* @brief Implementaion of Crank-Nicolson method.
+* @brief Implementaion of Crank-Nicolson method in MPI.
 * @see AbstractSchema
 * Provides all methods that have to be used by discretizator.
 * Stores calculated matrices for increasing performance.
@@ -17,14 +22,43 @@
 class CrankNicolsonParallelSchema : public AbstractSchema
 {
 private:
+	/*
+	 * MPI Tag message - left.
+	 */
 	long TAG_LEFT = 0;
+	/*
+	 * MPI Tag message - right.
+	 */
 	long TAG_RIGHT = 1;
+	/*
+	 * MPI Tag message - d.
+	 */
 	long TAG_D = 2;
+	/*
+	 * MPI Tag message - z.
+	 */
 	long TAG_Z = 3;
+	/*
+	 * MPI Tag message - y.
+	 */
 	long TAG_Y = 4;
+	/*
+	 * MPI Tag message - l.
+	 */
 	long TAG_L = 5;
 protected:
+	/*
+	 * Pointers to arrays used in Thomas algorithm for solving tridiagonal matrices.
+	 */
 	double * l, * u, * d;
+	
+	/*
+	 * Performs LU Decomposition for given parameters, which are elements in tridiagonal matrix.
+	 * Sets the calculated values to l, u, d arrays.
+	 * @param a Second diagonal value.
+	 * @param b First diagonal value.
+	 * @param c Third diagonal value.
+	 */
 	void setUpLUDecomposition(double a, double b, double c);
 public:
 	/**
@@ -59,10 +93,32 @@ public:
 	*/
 	virtual std::vector<double> * postApplyAction(std::vector<double> * previousWave, double t);
 
+	/*
+	 * Default destructor. Deallocates l, u, d arrays.
+	 */
 	~CrankNicolsonParallelSchema();
 
+	/*
+	 * Performs substitusion (backward and forward) in order to solve linear equation set stored in l,u,d and given q using Thomas algorithm.
+	 * @param q Array of knowns.
+	 * @return Vector of solution.
+	 */
 	std::vector<double> * Substitution(double *q);
+
+	/*
+	 * Part of Thomas algorithm for solving tridiagonal matrices problem.
+	 * Performs forward substitusion on given array.
+	 * @param q Array of knowns.
+	 * @return Vector of solution.
+	 */
 	double * ForwardSubstitution(double *q);
+	
+	/*
+	 * Part of Thomas algorithm for solving tridiagonal matrices problem.
+	 * Performs forward substitusion on given array.
+	 * @param y Array of knowns.
+	 * @return Vector of solution.
+	 */
 	std::vector<double> * BackwardSubstitution(double *y);
 };
 
