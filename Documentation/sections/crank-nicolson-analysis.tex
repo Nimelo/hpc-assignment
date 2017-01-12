@@ -19,7 +19,7 @@
 		\begin{bmatrix}
 			1 		& \alpha &		  &  	 &		&\\
 			-\alpha & 1 	 & \alpha &  	 &		&\\ 
-					& \ddots & \ddots &  	 &		&\\
+					& \ddots & \ddots &  \ddots	 &		&\\
 					&		 &-\alpha & 1 	 &\alpha&\\
 					& 		 & 		  &-\alpha&	1	&\\					
 		\end{bmatrix} 
@@ -68,7 +68,7 @@
 			\draw [->](i+1j+1) -- (ij+1);
 			\draw [->](i-1j+1) -- (ij+1);
 		\end{tikzpicture}
-		\caption{Graphical representation of the explicit upwind scheme dependencies.}
+		\caption{Graphical representation of the Crank-Nicolson scheme dependencies.}
 		\label{fig:stencil:crank-nicolson}
 	\end{figure}
 	Described earlier scheme is first-order accurate both in space and time. This method is unconditionally stable for: $C > 0$.
