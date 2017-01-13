@@ -21,7 +21,7 @@
 	\end{figure}
 	
 	Considering \gls{stencil}s from all three schemes it is easy to deduct that parallelism at the time has no sense, because solution for next time step always depends on previous and sometimes (for implicit schemes) current solution. However a good idea is to split jobs at the space domain. Spreading grid to local grids among all the processors requires an algorithm to deal with uneven division of grid size and total number of processors. Listing \ref{lst:fragmentation} presents simple algorithm that calculates fragmentation of grid size depending on identification of core and total quantity of cores.
-	\begin{lstlisting}[caption=test, label=lst:fragmentation] 
+	\begin{lstlisting}[caption=Grid fragmentation algorithm written in C++., label=lst:fragmentation] 
 long fragmentation(long coreId, long coresQuantity, long jobSize)
 {
 	if (coresQuantity == 1)
