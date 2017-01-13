@@ -8,14 +8,14 @@
 		\frac{C}{4} f_{i-1}^n + f_{i}^n - \frac{C}{4} f_{i+1}^n = -\frac{C}{4} f_{i-1}^{n+1} + f_{i}^{n+1} + \frac{C}{4} f_{i+1}^{n+1}
 	\end{equation}
 	where $C$ is \gls{CFL} number introduced earlier \eqref{eq:cfl}. Assuming following dependencies:
-	\begin{equation}
+	\begin{equation} \label{eq:crank-nicolson:dependencies-matrix}
 		\begin{split}
 			\alpha &= \frac{C}{4}\\
 			 k_i &= \frac{C}{4} f_{i-1}^n + f_{i}^n - \frac{C}{4} f_{i+1}^n
 		\end{split}
 	\end{equation}
 	equation \ref{eq:crank-nicolson:solution} drives us to solve following linear system of form $Af^{n+1} = f^n$ by Thomas algorithm:		
-	\begin{equation}
+	\begin{equation} \label{eq:crani-nicolson:matrix}
 		\begin{bmatrix}
 			1 		& \alpha &		  &  	 &		&\\
 			-\alpha & 1 	 & \alpha &  	 &		&\\ 

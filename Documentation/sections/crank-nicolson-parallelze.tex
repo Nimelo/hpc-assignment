@@ -1,1 +1,189 @@
 \subsection{Crank--Nicolson scheme parallel algorithm} \label{s:general-approach:crank-nicolson-parallel-algorithm}
+	Crank--Nicolson numerical methods is an implicit scheme, which requires to solve a matrix to get new solution at time step $n+1$. According to formula \eqref{eq:crani-nicolson:matrix} we can see that matrix $A$ is tridiagonal. George Em Karniadakis and Robert M. Kirby II in \cite{bib:mpi}[p. 359 -- 361] proposed \emph{Thomas Algorithm for Tridiagonal Systems}. Mentioned algorithm has three stages:
+	\begin{enumerate}
+		\item (LU Decomposition) $A = LU$;
+		\item (Forward Substitution) $Ly = q$;
+		\item (Backward Substitution) $Ux = y$
+	\end{enumerate}
+	Unfortunately backward and forward substitutions have dependency to previous and next element respectively. It means that there is no way to speedup those stages using parallel approach. The only way to improve performance of Thomas algorithm in terms of Crank-Nicolson scheme is to make use of a fact that tridiagonal dominant matrix will have the same values of element for every iterations -- it can be calculated at the beginning only once during initialization of dependent variables shown in Figure \ref{fig:schematicOfFDM}.
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=1.0]
+			\draw[dotted] (-0.5,-0.5) -- (15.25,-0.5);
+			\draw[dotted] (-0.5, 1.5) -- (15.25, 1.5);
+			\draw[dotted] (-0.5, 1.5) -- (-0.5, -0.5);
+			\draw[dotted] (15.25, 1.5) -- (15.25, -0.5);
+			\filldraw[fill=magenta!40!white, draw=black] (0,0) rectangle (3,1);
+			\filldraw[fill=blue!40!white, draw=black] (4,0) rectangle (7,1);
+			\filldraw[fill=yellow!40!white, draw=black] (8,0) rectangle (11,1);
+			\filldraw[fill=green!40!white, draw=black] (12,0) rectangle (15,1);
+			\node[align=right] at (1.5, -0.25) {\emph{Processor 1}};
+			\node[align=right] at (5.5, -0.25) {\emph{Processor 2}};
+			\node[align=right] at (9.5, -0.25) {\emph{Processor $i$}};
+			\node[align=right] at (13.5, -0.25) {\emph{Processor $p$}};
+			\draw [->][cyan] (3.25, 0.25) -- node [midway, above, sloped, black] {$y_{lmax}^{n+1}$} (3.75, 0.25);
+			\draw [->][cyan] (7.25, 0.25) -- node [midway, above, sloped, black] {$y_{lmax}^{n+1}$} (7.75, 0.25);
+			\draw [->][cyan] (11.25, 0.25) -- node [midway, above, sloped, black] {$y_{lmax}^{n+1}$} (11.75, 0.25);
+			\draw[<->] (0,-0.75) -- node [midway, below, sloped, black] {\emph{Entire grid}} (15,-0.75);
+		\end{tikzpicture}
+		\caption{Communication between processors during forward substitution.}
+		\label{fig:communication:forward-substitution}
+	\end{figure}
+	In a serial way backward and forward substitutions requires an entire grid and dependent LU decomposition matrices. Using this approach main processor would need to gather all local grids from the processors, which later would be used in a serial algorithm. Moreover after this it would required to scatter new solution to processors, which highly increases the load of communication without increase of efficiency. Due to that remark it would be better to make use of a serial Thomas algorithm in a way that communication between processors stays as low as possible. Mentioned in Section \ref{s:general-approach:devise-a-way-to-parallelize} spreading grid across all processors is a good idea.
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=1.0]
+			\draw[dotted] (-0.5,-0.5) -- (15.25,-0.5);
+			\draw[dotted] (-0.5, 1.5) -- (15.25, 1.5);
+			\draw[dotted] (-0.5, 1.5) -- (-0.5, -0.5);
+			\draw[dotted] (15.25, 1.5) -- (15.25, -0.5);
+			\filldraw[fill=green!40!white, draw=black] (0,0) rectangle (3,1);
+			\filldraw[fill=yellow!40!white, draw=black] (4,0) rectangle (7,1);
+			\filldraw[fill=blue!40!white, draw=black] (8,0) rectangle (11,1);
+			\filldraw[fill=magenta!40!white, draw=black] (12,0) rectangle (15,1);
+			\node[align=right] at (1.5, -0.25) {\emph{Processor 1}};
+			\node[align=right] at (5.5, -0.25) {\emph{Processor 2}};
+			\node[align=right] at (9.5, -0.25) {\emph{Processor $i$}};
+			\node[align=right] at (13.5, -0.25) {\emph{Processor $p$}};
+			\draw [<-][cyan] (3.25, 0.25) -- node [midway, above, sloped, black] {$x_{lmin}^{n+1}$} (3.75, 0.25);
+			\draw [<-][cyan] (7.25, 0.25) -- node [midway, above, sloped, black] {$x_{lmin}^{n+1}$} (7.75, 0.25);
+			\draw [<-][cyan] (11.25, 0.25) -- node [midway, above, sloped, black] {$x_{lmin}^{n+1}$} (11.75, 0.25);
+			\draw[<->] (0,-0.75) -- node [midway, below, sloped, black] {\emph{Entire grid}} (15,-0.75);
+		\end{tikzpicture}
+		\caption{Communication between processors during backward substitution.}
+		\label{fig:communication:backward-substitution}
+	\end{figure}
+	During processing second and third stage of Thomas algorithm each processor will require to send/receive only 2 values in case of forward substitution and one for backward. So the value of communication decreased from double grid size to triple amount of processors. It is very likely that quantity of processors is much lower than size of the grid, thus this approach is valid.
+	
+	Looking at right side of Equation \eqref{eq:crani-nicolson:matrix}, dependencies \eqref{eq:crank-nicolson:dependencies-matrix} and \gls{stencil} \ref{fig:stencil:crank-nicolson} we observe that current solution depends on the left and right point at time $n$. It is possible to conclude two conclusions: processors will be able to work simultaneously after exchanging two boundaries from neighboring processors, although still solving of tridiagonal dominant matrix will be required to solve after. Due to idea of spreading grid locally we can prove its even better idea to keep data locally rather than exchanging entire grid in order to invoke Thomas algorithm.	
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=0.99]
+			\draw[dotted] (-0.5,1.5) -- (15.5,1.5);
+			\draw[dotted] (-0.5, -2) -- (15.5, -2);
+			\draw[dotted] (-0.5, 1.5) -- (-0.5, -2);
+			\draw[dotted] (15.5, -2) -- (15.5, 1.5);
+			
+			\filldraw[fill=blue!40!white, draw=black] (0,0) rectangle (3,-1);
+			\filldraw[fill=blue!40!white, draw=black] (4,0) rectangle (7,-1);
+			\filldraw[fill=blue!40!white, draw=black] (8,0) rectangle (11,-1);
+			\filldraw[fill=blue!40!white, draw=black] (12,0) rectangle (15,-1);
+			\node[align=right] at (1.5, -1.25) {\emph{Processor 1}};
+			\node[align=right] at (5.5, -1.25) {\emph{Processor 2}};
+			\node[align=right] at (9.5, -1.25) {\emph{Processor $i$}};
+			\node[align=right] at (13.5, -1.25) {\emph{Processor $p$}};
+			
+			\draw [->][green] (3.25, 0) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (3.75, 0);
+			\draw [->][green] (7.25, 0) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (7.75, 0);
+			\draw [->][green] (11.25, 0) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (11.75, 0);
+			
+			
+			\draw [<-][orange] (3.25, -1) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (3.75, -1);
+			\draw [<-][orange] (7.25, -1) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (7.75, -1);
+			\draw [<-][orange] (11.25, -1) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (11.75, -1);
+			
+			\draw [<-][green] (-.25, 0) -- (-.25, 0.75) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (15.25, 0.75) -- (15.25, 0);
+			
+			\draw [->][orange] (-.25, -1) -- (-.25, -1.75) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (15.25, -1.75) -- (15.25, -1);
+			
+			\draw[<->] (0,-2.25) -- node [midway, below, sloped, black] {\emph{Entire grid}} (15,-2.25);
+		\end{tikzpicture}
+		\caption{Communication between processors in parallel Crank-Nicolson schema.}
+		\label{fig:communication:crank-nicolson}
+	\end{figure}
+	Figure \ref{fig:communication:crank-nicolson} presents communication in parallel Crank-Nicolson numerical schema. It is clearly visible that each processor has to exchange two values. In case of backward (Figure \ref{fig:communication:backward-substitution}) and forward (Figure \ref{fig:communication:forward-substitution}) substitution only one value is send between processors starting from respectively last and first processor.
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=0.95]
+			\draw [->] [black, thick] (-.5, 4.5) -- (-.5, -13.75);
+			
+			\node[black] at (-0.85, 3) {\rotatebox{90}{\emph{Preparing vector $q$}}};
+			\filldraw[fill=green!40!white, draw=black] (0, 3.5) rectangle (3, 2.5);
+			\filldraw[fill=green!40!white, draw=black] (4, 3.5) rectangle (7, 2.5);
+			\filldraw[fill=green!40!white, draw=black] (8, 3.5) rectangle (11, 2.5);
+			\filldraw[fill=green!40!white, draw=black] (12, 3.5) rectangle (15, 2.5);
+			\draw [->][green] (3.25, 3.5) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (3.75, 3.5);
+			\draw [->][green] (7.25, 3.5) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (7.75, 3.5);
+			\draw [->][green] (11.25, 3.5) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (11.75, 3.5);	
+			\draw [<-][orange] (3.25, 2.5) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (3.75, 2.5);
+			\draw [<-][orange] (7.25, 2.5) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (7.75, 2.5);
+			\draw [<-][orange] (11.25, 2.5) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (11.75, 2.5);	
+			\draw [<-][green] (-.25, 3.5) -- (-.25, 4.25) -- node [midway, above, sloped, black] {$f_{lmax}^{n}$} (15.25, 4.25) -- (15.25, 3.5);		
+			\draw [->][orange] (-.25, 2.5) -- (-.25, 1.75) -- node [midway, above, sloped, black] {$f_{lmin}^{n}$} (15.25, 1.75) -- (15.25, 2.5);	
+			
+			\draw [dotted] (0, 1.5) -- (15, 1.5);
+			\draw [->] [black, thick] (7.5, 1.25) -- (7.5, .5);
+			\draw [dotted] (0, .25) -- (15, .25);
+			
+			\node[black] at (-0.85, -2.75) {\rotatebox{90}{\emph{Forward substitution}}};
+			\draw [->][cyan] (3.25, -0.5) -- node [midway, above, sloped, black] {$y_{lmax}^{n+1}$} (3.75, -.5);
+			\draw [->][cyan] (3.25, -0.5) -- node [midway, below, sloped, black] {$l_{lmax}^{n+1}$} (3.75, -.5);
+			\filldraw[fill=green!45!white, draw=black] (0,0) rectangle (3,-1);
+			\filldraw[fill=red!80!white, draw=black] (4,0) rectangle (7,-1);
+			\filldraw[fill=red!80!white, draw=black] (8,0) rectangle (11,-1);
+			\filldraw[fill=red!80!white, draw=black] (12,0) rectangle (15,-1);
+			\draw [dotted] (0,-1.25) -- (15,-1.25);
+			
+			\draw [->][cyan] (7.25, -2) -- node [midway, above, sloped, black] {$y_{lmax}^{n+1}$} (7.75, -2);
+			\draw [->][cyan] (7.25, -2) -- node [midway, below, sloped, black] {$l_{lmax}^{n+1}$} (7.75, -2);
+			\filldraw[fill=gray!40!white, draw=black] (0,-1.5) rectangle (3,-2.5);
+			\filldraw[fill=green!50!white, draw=black] (4,-1.5) rectangle (7,-2.5);
+			\filldraw[fill=red!80!white, draw=black] (8,-1.5) rectangle (11,-2.5);
+			\filldraw[fill=red!80!white, draw=black] (12,-1.5) rectangle (15,-2.5);
+			\draw [dotted] (0,-2.75) -- (15,-2.75);
+			
+			\draw [->][cyan] (11.25, -3.5) -- node [midway, above, sloped, black] {$y_{lmax}^{n+1}$} (11.75, -3.5);
+			\draw [->][cyan] (11.25, -3.5) -- node [midway, below, sloped, black] {$l_{lmax}^{n+1}$} (11.75, -3.5);
+			\filldraw[fill=gray!60!white, draw=black] (0,-3) rectangle (3,-4);
+			\filldraw[fill=gray!40!white, draw=black] (4,-3) rectangle (7,-4);
+			\filldraw[fill=green!60!white, draw=black] (8,-3) rectangle (11,-4);
+			\filldraw[fill=red!80!white, draw=black] (12,-3) rectangle (15,-4);
+			\draw [dotted] (0,-4.25) -- (15,-4.25);
+			
+			\filldraw[fill=gray!80!white, draw=black] (0,-4.5) rectangle (3,-5.5);
+			\filldraw[fill=gray!60!white, draw=black] (4,-4.5) rectangle (7,-5.5);
+			\filldraw[fill=gray!40!white, draw=black] (8,-4.5) rectangle (11,-5.5);
+			\filldraw[fill=green!65!white, draw=black] (12,-4.5) rectangle (15,-5.5);
+			\draw [dotted] (0,-5.75) -- (15,-5.75);
+			
+			\draw [->][black] (7.5,-6) -- (7.5,-7);
+			\draw [dotted] (0,-7.25) -- (15,-7.25);	
+			
+			\node[black] at (-0.85, -10.25) {\rotatebox{90}{\emph{Backward substitution}}};
+			\draw [->][cyan] (11.75, -8) -- node [midway, above, sloped, black] {$x_{lmin}^{n+1}$} (11.25, -8);
+			\filldraw[fill=red!100!white, draw=black] (0,-7.5) rectangle (3,-8.5);
+			\filldraw[fill=red!100!white, draw=black] (4,-7.5) rectangle (7,-8.5);
+			\filldraw[fill=red!80!white, draw=black] (8,-7.5) rectangle (11,-8.5);
+			\filldraw[fill=green!70!white, draw=black] (12,-7.5) rectangle (15,-8.5);
+			\draw [dotted] (0,-8.75) -- (15,-8.75);
+			
+			\draw [->][cyan] (7.75, -9.5) -- node [midway, above, sloped, black] {$x_{lmin}^{n+1}$} (7.25, -9.5);
+			\filldraw[fill=red!100!white, draw=black] (0,-9) rectangle (3,-10);
+			\filldraw[fill=red!100!white, draw=black] (4,-9) rectangle (7,-10);
+			\filldraw[fill=green!75!white, draw=black] (8,-9) rectangle (11,-10);
+			\filldraw[fill=gray!40!white, draw=black] (12,-9) rectangle (15,-10);
+			\draw [dotted] (0,-10.25) -- (15,-10.25);
+			
+			\draw [->][cyan] (3.75, -11) -- node [midway, above, sloped, black] {$x_{lmin}^{n+1}$} (3.25, -11);
+			\filldraw[fill=red!100!white, draw=black] (0,-10.5) rectangle (3,-11.5);
+			\filldraw[fill=green!80!white, draw=black] (4,-10.5) rectangle (7,-11.5);
+			\filldraw[fill=gray!40!white, draw=black] (8,-10.5) rectangle (11,-11.5);
+			\filldraw[fill=gray!60!white, draw=black] (12,-10.5) rectangle (15,-11.5);
+			\draw [dotted] (0,-11.75) -- (15,-11.75);
+			
+			\filldraw[fill=green!85!white, draw=black] (0,-12) rectangle (3,-13);
+			\filldraw[fill=gray!40!white, draw=black] (4,-12) rectangle (7,-13);
+			\filldraw[fill=gray!60!white, draw=black] (8,-12) rectangle (11,-13);
+			\filldraw[fill=gray!80!white, draw=black] (12,-12) rectangle (15,-13);
+			\draw [dotted] (0,-13.25) -- (15,-13.25);
+			
+			\node[align=right] at (1.5, -13.5) {\emph{Processor 1}};
+			\node[align=right] at (5.5, -13.5) {\emph{Processor 2}};
+			\node[align=right] at (9.5, -13.5) {\emph{Processor $i$}};
+			\node[align=right] at (13.5, -13.5) {\emph{Processor $p$}};
+			
+		\end{tikzpicture}
+		\caption{Visualization of parallel calculations for Crank-Nicolson scheme.}
+		\label{fig:visualization:crank-nicolson}
+	\end{figure}
+	Presented communication in Figure \ref{fig:visualization:crank-nicolson} shows a process of acquiring new solution. This schematic does not contain initialization of matrices $l$, $u$, $d$, which are similarly to implicit upwind scheme created at the beginning of discretization process as mentioned before in \ref{s:general-approach:implicit-upwind-parallel-algorithm}.
