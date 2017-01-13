@@ -39,7 +39,6 @@ std::vector<double>* ImplicitUpwindParallelSchema::apply(std::vector<double>* pr
 	std::vector<double> * currentWave = new std::vector<double>(gridSize);
 
 	double leftBound = this->getLowerBound(coreId, coresQuantity, previousWave->at(0));
-	sendUpperBound(coreId, coresQuantity, previousWave->at(gridSize - 1));
 
 	if (cfl > 0)
 	{
@@ -57,6 +56,8 @@ std::vector<double>* ImplicitUpwindParallelSchema::apply(std::vector<double>* pr
 		}
 		currentWave->at(0) = ((1.0 + cfl) * currentWave->at(0) - previousWave->at(0)) / cfl;
 	}
+
+	sendUpperBound(coreId, coresQuantity, currentWave->at(gridSize - 1));
 
 	return currentWave;
 }

@@ -1,1 +1,45 @@
 \section{Devise a way to parallelize} \label{s:general-approach:devise-a-way-to-parallelize}
+	This section introduces ways of parallelization three numerical methods: \emph{explicit upwind}, \emph{implicit upwind} and \emph{Crank-Nicolson}. Each of them contains figure in a subsection describing the task division in domain of time and space. Second figure for all schemes will present parallelism of work by processors. Following subsections refer to \gls{stencil}s of numerical methods in order to extract necessary data to send between processors. Figure \ref{fig:visualization:serial-calculations} bases on Figure \ref{fig:schematicOfFDM} and shows the data flow during calculations of next time steps using serial algorithm. Additionally mentioned figure constitute to parallel visualizations In each time step values in the grid are closer (opacity of green color) to the desired values. All the calculations are performed by a single processor for each point in the grid. After reaching certain time step calculations are stopped. 
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=1.0]
+			\draw [->] [black, thick] (-.25, 0.25) -- (-.25, -6.5);
+			\filldraw[fill=green!30!white, draw=black] (0,0) rectangle (13,-1);
+			\node[black] at (-1.25, -0.5) {$t$};
+			\filldraw[fill=green!40!white, draw=black] (0,-1.5) rectangle (13,-2.5);
+			\node[black] at (-1.25, -2) {$t + \Delta t$};
+			\filldraw[fill=green!50!white, draw=black] (0,-3) rectangle (13,-4);
+			\node[black] at (-1.25, -3.5) {$t + 2\Delta t$};
+			\draw [->] [dotted] (7, -4.25) -- (7, -5);
+			\node[black] at (-1.25, -4.25 - 0.75/2) {$t + i \Delta t$};
+			\filldraw[fill=green!60!white, draw=black] (0,-5.25) rectangle (13,-6.25);
+			\node[black] at (-1.25, -5.75) {$\max t$};
+			\node[black] at (7, -6.5) {\emph{Processor 1}};
+		\end{tikzpicture}
+		\caption{Visualization of serial calculations for one dimensional grid.}
+		\label{fig:visualization:serial-calculations}
+	\end{figure}
+	
+	Considering \gls{stencil}s from all three schemes it is easy to deduct that parallelism at the time has no sense, because solution for next time step always depends on previous and sometimes (for implicit schemes) current solution. However a good idea is to split jobs at the space domain. Spreading grid to local grids among all the processors requires an algorithm to deal with uneven division of grid size and total number of processors. Listing \ref{lst:fragmentation} presents simple algorithm that calculates fragmentation of grid size depending on identification of core and total quantity of cores.
+	\begin{lstlisting}[caption=test, label=lst:fragmentation] 
+long fragmentation(long coreId, long coresQuantity, long jobSize)
+{
+	if (coresQuantity == 1)
+		return jobSize;
+	else if (jobSize % coresQuantity == 0)
+		return jobSize / coresQuantity;
+	else
+	{
+		if (coreId == coresQuantity - 1)
+			return jobSize / coresQuantity + jobSize % coresQuantity;
+		else
+			return jobSize / coresQuantity;
+	}
+}
+	\end{lstlisting} 
+	It is easy to observe that in this approach last processors will do additional work, which can be in the worst case will be the size of equal to sum modulo of grid size and total quantity of processors (nearly two times more). Since data is stored and spreaded across all processors the second common part of the algorithm is gathering the final results, which requires serial approach. All but main core are obligated to send their local grids to main core in ascending order of core id. Complexity of this problem is of order $\mathcal{O}(n)$, where $n$ is a size of the grid.
+	
+	\input{sections/explicit-upwind-parallelze}
+	\input{sections/implicit-upwind-parallelze}
+	\input{sections/crank-nicolson-parallelze}
+	\clearpage
