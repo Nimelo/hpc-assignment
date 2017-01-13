@@ -27,7 +27,14 @@ Discretizator * DiscretizatorsFactory::manufacture(Configuration * configuration
 	double dx = (configuration->upperBound - configuration->lowerBound) / configuration->numberOfPoints;
 	double dt = (configuration->cfl * dx) / configuration->acceleration;
 
-	int fragmentation = (configuration->numberOfPoints / coresQuantity) + configuration->numberOfPoints % coresQuantity;
+	int fragmentation = coresQuantity == 1 ?
+			configuration->numberOfPoints :
+			configuration->numberOfPoints % coresQuantity == 0 ?
+				configuration->numberOfPoints / coresQuantity :
+				coreId == coresQuantity - 1 ?
+					configuration->numberOfPoints / coresQuantity + configuration->numberOfPoints % coresQuantity :
+					configuration->numberOfPoints / coresQuantity;
+					
 	DiscretizationParameters * discretizationParameters = new DiscretizationParameters(
 		configuration->lowerBound,
 		configuration->upperBound,
