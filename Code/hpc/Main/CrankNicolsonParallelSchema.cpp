@@ -124,8 +124,9 @@ std::vector<double>* CrankNicolsonParallelSchema::BackwardSubstitution(double * 
 }
 
 CrankNicolsonParallelSchema::CrankNicolsonParallelSchema(long coreId, long coresQuantity, unsigned int numberOfPoints, double a, double dx, double dt)
-	: AbstractSchema(coreId, coresQuantity, numberOfPoints, a, dx, dt)
+	: AbstractSchema(coreId, coresQuantity, numberOfPoints, a, dx, dt), TAG_D(0), TAG_L(1), TAG_LEFT(2), TAG_RIGHT(3), TAG_Y(4), TAG_Z(5)
 {
+
 	l = new double[this->numberOfPoints];
 	u = new double[this->numberOfPoints];
 	d = new double[this->numberOfPoints];

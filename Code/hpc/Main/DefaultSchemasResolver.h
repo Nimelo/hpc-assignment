@@ -6,6 +6,8 @@
 #ifndef __H_DEFAULT_SCHEMAS_RESOLVER
 #define __H_DEFAULT_SCHEMAS_RESOLVER
 
+#include <string>
+
 #include "AbstractSchema.h"
 
 #include "UpwindExplicitSchema.h"

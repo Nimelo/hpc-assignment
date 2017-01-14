@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 #include "ParallelDiscretizator.h"
 #include "Exception.h"

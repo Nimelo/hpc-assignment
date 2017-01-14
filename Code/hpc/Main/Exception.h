@@ -1,7 +1,7 @@
-﻿/**
- * @file Exception.h
- * @brief Declaration of common excetpion for a project.
- */
+/**
+* @file Exception.h
+* @brief Common exception for entire project.
+*/
 
 #ifndef __H_EXCEPTION
 #define __H_EXCEPTION

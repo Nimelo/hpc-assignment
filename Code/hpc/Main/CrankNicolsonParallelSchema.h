@@ -25,27 +25,27 @@ private:
 	/*
 	 * MPI Tag message - left.
 	 */
-	long TAG_LEFT = 0;
+	const long TAG_LEFT;
 	/*
 	 * MPI Tag message - right.
 	 */
-	long TAG_RIGHT = 1;
+	const long TAG_RIGHT;
 	/*
 	 * MPI Tag message - d.
 	 */
-	long TAG_D = 2;
+	const long TAG_D;
 	/*
 	 * MPI Tag message - z.
 	 */
-	long TAG_Z = 3;
+	const long TAG_Z;
 	/*
 	 * MPI Tag message - y.
 	 */
-	long TAG_Y = 4;
+	const long TAG_Y;
 	/*
 	 * MPI Tag message - l.
 	 */
-	long TAG_L = 5;
+	const long TAG_L;
 protected:
 	/*
 	 * Pointers to arrays used in Thomas algorithm for solving tridiagonal matrices.

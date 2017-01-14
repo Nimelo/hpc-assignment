@@ -6,6 +6,8 @@
 #ifndef __H_CONSTANTS
 #define __H_CONSTANTS
 
+#include <string>
+
 /**
 * @brief Provides const expresions used in across applicaiton.
 * @author Mateusz Gasior
@@ -16,31 +18,31 @@ public:
 	/*
 	 * Id of main core.
 	 */
-	static const long ROOT_CORE = 0;
+	static const long ROOT_CORE;
 	/*
 	 * Text describing upwind explicit schema.
 	 */
-	static constexpr const char * UPWIND_EXPLICIT = "upwind-explicit";
+	static const std::string UPWIND_EXPLICIT;
 	/*
 	 * Text describing upwind implicit schema.
 	 */
-	static constexpr const char * UPWIND_IMPLICIT = "upwind-implicit";
+	static const std::string UPWIND_IMPLICIT;
 	/*
 	 * Text describing Crank-Nicolson schema.
 	 */
-	static constexpr const char * CRANK_NICOLSON = "crank-nicolson";
+	static const std::string CRANK_NICOLSON;
 	/*
 	 * Text describing parallel upwind implicit schema.
 	 */
-	static constexpr const char * UPWIND_EXPLICIT_PARALLEL = "upwind-explicit-parallel";
+	static const std::string UPWIND_EXPLICIT_PARALLEL;
 	/*
 	 * Text describing parallel upwind implicit schema.
 	 */
-	static constexpr const char * UPWIND_IMPLICIT_PARALLEL = "upwind-implicit-parallel";
+	static const std::string UPWIND_IMPLICIT_PARALLEL;
 	/*
 	 * Text describing parallel Crank-Nisolson schema.
 	 */
-	static constexpr const char * CRANK_NICOLSON_PARALLEL = "crank-nicolson-parallel";
+	static const std::string CRANK_NICOLSON_PARALLEL;
 };
 
 #endif
