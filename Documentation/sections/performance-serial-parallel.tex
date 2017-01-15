@@ -5,21 +5,69 @@
 	\begin{tikzpicture}[scale=0.6]	 	
 	\pgfplotsset{width=\textwidth}
 		\begin{axis}[
-			xlabel = {$numer of processors$},
-			ylabel = {$execution time$},
+			xlabel = {\emph{number of processors}},
+			ylabel = {\emph{speed--up}},
 			%ymin = -1, ymax = 1,
-			%xmin = 5, xmax = 13,
+			xmin = 0,% xmax = 13,
 			%minor y tick num = 1,
 			ymajorgrids=true,
 			xmajorgrids=true,
 			grid style=dashed,
 			legend pos=north east
 			]
-			\addcustomplot{others/performance/crank-nicolson-parallel-final.csv}{red}{1}{CN}
-			\addcustomplot{others/performance/implicit-upwind-parallel-final.csv}{green}{2}{IU}
-			\addcustomplot{others/performance/explicit-upwind-parallel-final.csv}{blue}{2}{EU}
+			\addplot[mark=*, cyan, line width = 1.5pt] {x};
+			\addlegendentryexpanded{Ideal};
+			\addcustomplot{others/performance/crank-nicolson-parallel-final.csv}{red}{1}{Actual}
 		\end{axis}
 	\end{tikzpicture}
-	\caption{Numerical solution comparison using implicit upwind scheme for serial and parallel algorithms. $\gls{CFL} = 0.01$ and $10000$ grid points.}
-	\label{fig:comparison:implicit-upwind}
+	\caption{Speed-up of Crank-Nicolson numerical method.}
+	\label{fig:speedup:crank-nicolson}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.6]	 	
+		\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+			xlabel = {\emph{number of processors}},
+			ylabel = {\emph{speed--up}},
+			%ymin = -1, ymax = 1,
+			xmin = 0, %xmax = 13,
+			%minor y tick num = 1,
+			ymajorgrids=true,
+			xmajorgrids=true,
+			grid style=dashed,
+			legend pos=north east
+			]
+			\addplot[domain=0:50,mark=*, cyan, line width = 1.5pt] {x};
+			\addlegendentryexpanded{Ideal};
+			\addcustomplot{others/performance/explicit-upwind-parallel-final.csv}{orange}{2}{Actual}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Speed-up of Explicit Upwind numerical method.}
+	\label{fig:speedup:explicit-upwind}
+\end{figure}
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.6]	 	
+	\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+			xlabel = {\emph{number of processors}},
+			ylabel = {\emph{speed--up}},
+			%ymin = -1, ymax = 1,
+			xmin = 0,% xmax = 13,
+			%minor y tick num = 1,
+			ymajorgrids=true,
+			xmajorgrids=true,
+			grid style=dashed,
+			legend pos=north east
+			]
+			\addplot[domain=0:50, mark=*, cyan, line width = 1.5pt] {x};
+			\addlegendentryexpanded{Ideal};
+			\addcustomplot{others/performance/implicit-upwind-parallel-final.csv}{magenta}{2}{Actual}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Speed-up of Implicit Upwind numerical method.}
+	\label{fig:speedup:implcit-upwind}
 \end{figure}
