@@ -1,1 +1,20 @@
 \section{Comparison of solution by serial and parallel algorithms} \label{s:results:compare-solutions-serial-parallel}
+
+	Form of \gls{HPC} is executing many computations at the same time, which in terms to serial solution should produce the same result but significantly faster. Referring to the Section \ref{s:introduction:objective} produced result should be the same if discretized from serial and parallel code are equal to themselves. Comparison of them is performed by checking the calculated norms, which can be seen in Table \ref{tab:comparison-serial-parallel}. All the norms for all schemes across serial and parallel algorithms are the same.
+	\begin{table}[!htbp]
+		\centering
+		\caption{Comparison of norms for parallel and serial code for different schemes.}
+		\label{tab:comparison-serial-parallel}
+		\begin{tabular}{l|l|l|l|l|l|l|}
+			\cline{2-7}
+			& \multicolumn{3}{c|}{\textit{\textbf{Serial}}} & \multicolumn{3}{c|}{\textit{\textbf{Parallel}}} \\ \cline{2-7} 
+			& \multicolumn{1}{c|}{\textit{\textbf{Norm $\infty$}}} & \multicolumn{1}{c|}{\textit{\textbf{Norm 1}}} & \multicolumn{1}{c|}{\textit{\textbf{Norm 2}}} & \multicolumn{1}{c|}{\textit{\textbf{Norm $\infty$}}} & \multicolumn{1}{c|}{\textit{\textbf{Norm 1}}} & \multicolumn{1}{c|}{\textit{\textbf{Norm 2}}} \\ \hline
+			\multicolumn{1}{|l|}{\textit{\textbf{Explicit Upwind}}} & 0.00426175 & 9.91758e-05 & 0.0555648 & 0.00426175 & 9.91758e-05 & 0.0555648 \\ \hline
+			\multicolumn{1}{|l|}{\textit{\textbf{Implicit Upwind}}} & 0.0390763 & 0.006964 & 0.386302 & 0.0390763 & 0.006964 & 0.386302 \\ \hline
+			\multicolumn{1}{|l|}{\textit{\textbf{Crank-Nicolson}}} & 0.000274795 & 7.06884e-06 & 0.00372495 & 0.000274795 & 7.06884e-06 & 0.00372495 \\ \hline
+		\end{tabular}
+	\end{table}
+	Additionally visualization of plots for different schemes are in Appendix \ref{chp:appendix:comparison-of-solutions} shown in Figures \ref{fig:comparison:implicit-upwind}, \ref{fig:comparison:explicit-upwind} and \ref{fig:comparison:crank-nicsolson}. It is easy to observe that solutions overlaps, which means that they are identical, which was proven by comparison each values of the solution between serial and parallel algorithms.
+	
+	
+	

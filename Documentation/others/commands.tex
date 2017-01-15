@@ -11,6 +11,19 @@
 	}
 }
 
+\newcommand{\addcustomplotblank}[5]{	
+	{
+		%\pgfplotstablegetcolsof{#}
+		\addplot[scatter, color=#2,
+		scatter/@pre marker code/.style={/tikz/mark size=2.0pt},
+		scatter/@post marker code/.style={},
+		line width = #5
+		]
+		table[x index=0,y index=#3, col sep=comma] {#1};
+		\addlegendentryexpanded{#4}
+	}
+}
+
 \newcommand{\addcustomybarplot}[4]
 {
 	\addplot[black,pattern color=#3,fill=#3,pattern=north east lines]  table[x index=0,y index=#2,col sep=comma]{#1};
