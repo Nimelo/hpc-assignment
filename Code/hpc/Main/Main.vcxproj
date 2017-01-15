@@ -180,6 +180,7 @@
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationLoader.cpp" />
     <ClCompile Include="ConfigurationParameter.cpp" />
+    <ClCompile Include="Constants.cpp" />
     <ClCompile Include="CrankNicolsonParallelSchema.cpp" />
     <ClCompile Include="CrankNicolsonSchema.cpp" />
     <ClCompile Include="DefaultSchemasResolver.cpp" />

@@ -239,5 +239,8 @@
     <ClCompile Include="CrankNicolsonParallelSchema.cpp">
       <Filter>Source Files\Schemes\Parallel</Filter>
     </ClCompile>
+    <ClCompile Include="Constants.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
