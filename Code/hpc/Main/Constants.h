@@ -32,6 +32,10 @@ public:
 	 */
 	static const std::string CRANK_NICOLSON;
 	/*
+	* Text describing upwind Crank Nicolson schema using LAPACK LINEAR SOLVER.
+	*/
+	static const std::string CRANK_NICOLSON_LAPACK;
+	/*
 	 * Text describing parallel upwind implicit schema.
 	 */
 	static const std::string UPWIND_EXPLICIT_PARALLEL;

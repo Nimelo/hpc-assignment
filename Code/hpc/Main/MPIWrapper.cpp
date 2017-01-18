@@ -4,13 +4,25 @@
  */
 
 #include "MPIWrapper.h"
-#define MPI_DEFINE
-#include <mpi.h>
+#ifdef MPI_DEFINE
+	#include <mpi.h>
+#else
+	#include <ctime>
+#endif 
+
+//#define MPI_DEFINE
+//#include <mpi.h>
+
 double MPIWrapper::getTime()
 {
+		
 		double value = 0.0;
 		#ifdef MPI_DEFINE
 			value = MPI_Wtime();
+		#else
+			time_t raw;
+			time(&raw);
+			value = raw;
 		#endif
 		return value;
 }
@@ -33,7 +45,7 @@ long MPIWrapper::getCoreId()
 
 long MPIWrapper::getQuantityOfCores()
 {
-	int coresQuantity = 0;
+	int coresQuantity = 1;
 	#ifdef MPI_DEFINE
 		MPI_Comm_size(MPI_COMM_WORLD, &coresQuantity);
 	#endif

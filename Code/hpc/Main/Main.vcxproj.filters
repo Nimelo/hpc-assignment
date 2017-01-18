@@ -168,6 +168,9 @@
     <ClInclude Include="CrankNicolsonParallelSchema.h">
       <Filter>Header Files\Schemes\Parallel</Filter>
     </ClInclude>
+    <ClInclude Include="CrankNicolsonSchemaEigen.h">
+      <Filter>Header Files\Schemes\Serial</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnalyticalFunctions.cpp">
@@ -241,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="Constants.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CrankNicolsonSchemaEigen.cpp">
+      <Filter>Source Files\Schemes\Serial</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

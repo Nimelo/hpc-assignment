@@ -22,6 +22,9 @@ const std::string Constants::UPWIND_IMPLICIT = "upwind-implicit";
 * Text describing Crank-Nicolson schema.
 */
 const std::string Constants::CRANK_NICOLSON = "crank-nicolson";
+
+const std::string Constants::CRANK_NICOLSON_LAPACK = "crank-nicolson-lapack";;
+
 /*
 * Text describing parallel upwind implicit schema.
 */

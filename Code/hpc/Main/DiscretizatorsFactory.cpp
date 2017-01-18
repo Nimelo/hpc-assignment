@@ -50,7 +50,8 @@ Discretizator * DiscretizatorsFactory::manufacture(Configuration * configuration
 	std::string schema = configuration->schema;
 	if (std::string(Constants::UPWIND_EXPLICIT) == schema
 		|| std::string(Constants::UPWIND_IMPLICIT) == schema
-		|| std::string(Constants::CRANK_NICOLSON) == schema)
+		|| std::string(Constants::CRANK_NICOLSON) == schema
+		|| std::string(Constants::CRANK_NICOLSON_LAPACK) == schema)
 	{
 		return new Discretizator(coreId, coresQuantity, discretizationParameters);
 	}

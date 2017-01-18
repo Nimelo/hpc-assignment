@@ -6,10 +6,6 @@
 #ifndef __H_MPI_WRAPPER
 #define __H_MPI_WRAPPER
 
-#ifdef MPI_DEFINE
-	#include <mpi.h>
-#endif
-
 /**
  * @brief Implementaion wrapper for MPI connections.
  * @see MPI
