@@ -47,7 +47,7 @@
 		\caption{Speed-up of Explicit Upwind numerical method.}
 		\label{fig:speedup:explicit-upwind}
 	\end{figure}
-	Calculation in explicit upwind scheme are performed simultaneously with very low \gls{computation-to-communication-ratio}. Produced result is the best comparing to the other discussed schemes. Small dispersion (rapid growth) from the linear order can be noticed in Figure \ref{fig:speedup:explicit-upwind} between $44$ and $48$ processor. It is very hard to say why is anomaly occurred, probably it is due to memory hierarchy and caching. Maximum \gls{speed-up} is equal $33.77$ for $52$ processors. The performance for this parallel algorithm is very scalable.
+	Calculations in explicit upwind scheme are performed simultaneously with very low \gls{computation-to-communication-ratio}. Produced result is the best comparing to the other discussed schemes. Small dispersion (rapid growth) from the linear order can be noticed in Figure \ref{fig:speedup:explicit-upwind} between $44$ and $48$ processor. It is very hard to identify why anomaly occurred, probably it is due to memory hierarchy and caching. Maximum \gls{speed-up} is equal $33.77$ for $52$ processors. The performance for this parallel algorithm is very scalable.
 	\begin{figure}[!htbp]
 		\centering
 		\begin{tikzpicture}[scale=0.7]	 	
@@ -71,6 +71,6 @@
 		\caption{Speed-up of Implicit Upwind numerical method.}
 		\label{fig:speedup:implcit-upwind}
 	\end{figure}
-	Almost classic linear growth of \gls{speed-up} is shown in Figure \ref{fig:speedup:implcit-upwind} reaching $33.14$ for $128$ processors. Due to very long queues further test cannot be performed for this scheme. Comparing to the explicit upwind slope of the \gls{speed-up} line is smaller.
+	Almost classic linear growth of \gls{speed-up} is shown in Figure \ref{fig:speedup:implcit-upwind} reaching $33.14$ for $128$ processors. Due to very long queues further test cannot be performed for this scheme. Comparing to the explicit upwind slope of the \gls{speed-up} line is smaller. Fact that processors have to send a new solution to the next one cause a standby time and is a reason of slow \gls{speed-up} increase. 
 	
 	None of the discussed schemes was close to the ideal \gls{speed-up}, although the largest one is performed by explicit upwind scheme.
