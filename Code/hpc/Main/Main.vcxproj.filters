@@ -168,8 +168,8 @@
     <ClInclude Include="CrankNicolsonParallelSchema.h">
       <Filter>Header Files\Schemes\Parallel</Filter>
     </ClInclude>
-    <ClInclude Include="CrankNicolsonSchemaEigen.h">
-      <Filter>Header Files\Schemes\Serial</Filter>
+    <ClInclude Include="EigenCrankNicolsonDiscretizator.h">
+      <Filter>Header Files\Discretizators</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -245,8 +245,11 @@
     <ClCompile Include="Constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CrankNicolsonSchemaEigen.cpp">
-      <Filter>Source Files\Schemes\Serial</Filter>
+    <ClCompile Include="EigenSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EigenCrankNicolsonDiscretizator.cpp">
+      <Filter>Source Files\Discretizators</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

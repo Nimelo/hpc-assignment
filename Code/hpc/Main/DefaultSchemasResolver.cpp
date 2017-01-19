@@ -32,9 +32,5 @@ AbstractSchema * DefaultSchemasResolver::resolve(std::string key, long coreId, l
 	{
 		return new CrankNicolsonParallelSchema(coreId, coresQuantity, numberOfPoints, a, dx, dt);
 	}
-	else if (key == Constants::CRANK_NICOLSON_LAPACK)
-	{
-		return new CrankNicolsonSchemaEigen(coreId, coresQuantity, numberOfPoints, a, dx, dt);
-	}
 		throw new Exception();
 }

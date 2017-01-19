@@ -39,7 +39,17 @@ long fragmentation(long coreId, long coresQuantity, long jobSize)
 	\end{lstlisting} 
 	It is easy to observe that in this approach last processors will do additional work, which can be in the worst case will be the size of equal to sum modulo of grid size and total quantity of processors (nearly two times more). Since data is stored and spreaded across all processors the second common part of the algorithm is gathering the final results, which requires serial approach. All but main core are obligated to send their local grids to main core in ascending order of core id. Complexity of this problem is of order $\mathcal{O}(n)$, where $n$ is a size of the grid.
 	
+	Figures in this chapter contains block that represents processors. They are in different colors with following dependencies:
+	\begin{itemize}
+		\item if processors in a row have the same color -- they work simultaneously;
+		\item green blocks represent working processors;
+		\item red block relates to processors that wait for a \gls{stencil} dependency from neighboring processors;
+		\item grayed processors shows processors that already executed task in given phase.
+	\end{itemize}
+	\clearpage
 	\input{sections/explicit-upwind-parallelze}
+	\clearpage
 	\input{sections/implicit-upwind-parallelze}
+	\clearpage
 	\input{sections/crank-nicolson-parallelze}
 	\clearpage
