@@ -1,0 +1,30 @@
+\section{User guide}
+	The program consumes 3 command line parameters in a following order:
+	\begin{enumerate}
+		\item path to configuration file,
+		\item path to output file with discretized values,
+		\item path to output file with norm files,
+	\end{enumerate}
+	Example configuration file is presented in \ref{app:exampleConfigurationFile}. The following Table \ref{tab:ugConf} describes all the fields in configuration file.	
+	\begin{table}[!htbp]
+		\caption{Description of fields inside configuration file.}
+		\label{tab:ugConf}
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Field} & \textbf{Description} \\ \hline \hline
+			lowerBound=-50 & Lower boundary. \\ \hline
+			upperBound=50 & Upper boundary. \\ \hline
+			acceleration=1.75 & Acceleration. \\ \hline
+			timeLevels=5,10,15,20 & Time levels separated by comma. \\ \hline
+			gridSize=400 & Grid size, amount of points. \\ \hline
+			schema=upwind\_explicit & Type of schema. \\ \hline
+			cfl=0.01 & \shortstack{\gls{CFL} number.} \\ \hline
+		\end{tabular}
+	\end{table}
+	In order to start a program all you need to do is type a following line in a command prompt, where first parameter is a configuration file, second one is a output wave file, third one is a output norm file.
+	
+	\fbox{\textbf{Application.exe} explicit-upwind-400-exp.conf waves.csv norms.csv}
+	
+\section{Example configuration file} \label{app:exampleConfigurationFile}
+	\lstinputlisting[caption=Example configuration file, language=C++]{../Code/hpc/Configurations/crank-nicolson-parallel.conf}
