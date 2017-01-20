@@ -1,0 +1,71 @@
+\section{1000} \label{app:1000}
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=0.7]	 	
+		\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+		xlabel = {\emph{number of processors}},
+		ylabel = {\emph{speed--up}},
+		%ymin = -1, ymax = 1,
+		xmin = 0,% xmax = 13,
+		%minor y tick num = 1,
+		ymajorgrids=true,
+		xmajorgrids=true,
+		grid style=dashed,
+		legend pos=north east
+		]
+		\addplot[mark=*, cyan, line width = 1.5pt] {x};
+		\addlegendentryexpanded{Ideal};
+		\addcustomplot{others/performance/crank-nicolson-parallel-final-1000.csv}{red}{2}{Actual}
+		\end{axis}
+		\end{tikzpicture}
+		\caption{Speed-up of Crank-Nicolson numerical method for $1000$ points.}
+		\label{fig:speedup:crank-nicolson}
+	\end{figure}
+
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=0.7]	 	
+		\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+		xlabel = {\emph{number of processors}},
+		ylabel = {\emph{speed--up}},
+		%ymin = -1, ymax = 1,
+		xmin = 0, %xmax = 13,
+		%minor y tick num = 1,
+		ymajorgrids=true,
+		xmajorgrids=true,
+		grid style=dashed,
+		legend pos=north east
+		]
+		\addplot[domain=0:50,mark=*, cyan, line width = 1.5pt] {x};
+		\addlegendentryexpanded{Ideal};
+		\addcustomplot{others/performance/explicit-upwind-parallel-final-1000.csv}{orange}{2}{Actual}
+		\end{axis}
+		\end{tikzpicture}
+		\caption{Speed-up of Explicit Upwind numerical method for $1000$ points.}
+		\label{fig:speedup:explicit-upwind}
+	\end{figure}
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}[scale=0.7]	 	
+		\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+		xlabel = {\emph{number of processors}},
+		ylabel = {\emph{speed--up}},
+		%ymin = -1, ymax = 1,
+		xmin = 0,% xmax = 13,
+		%minor y tick num = 1,
+		ymajorgrids=true,
+		xmajorgrids=true,
+		grid style=dashed,
+		legend pos=north east
+		]
+		\addplot[domain=0:50, mark=*, cyan, line width = 1.5pt] {x};
+		\addlegendentryexpanded{Ideal};
+		\addcustomplot{others/performance/implicit-upwind-parallel-final-1000.csv}{magenta}{2}{Actual}
+		\end{axis}
+		\end{tikzpicture}
+		\caption{Speed-up of Implicit Upwind numerical method for $1000$ points.}
+		\label{fig:speedup:implcit-upwind}
+	\end{figure}
