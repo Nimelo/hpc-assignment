@@ -1,1 +1,24 @@
 \section{Impact of external linear solver on performance} \label{s:results:performance-external-linear-solver}
+
+\begin{figure}[!htbp]
+	\centering
+	\begin{tikzpicture}[scale=0.7]	 	
+	\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+			xlabel = {\emph{execution time in s}},
+			ylabel = {\emph{number of points}},
+			%ymin = -1, ymax = 1,
+			xmin = 0,% xmax = 13,
+			%minor y tick num = 1,
+			ymajorgrids=true,
+			xmajorgrids=true,
+			grid style=dashed,
+			legend pos=north west
+			]
+			\addcustomplot{others/performance/serial-parallel.csv}{cyan}{2}{External}
+			\addcustomplot{others/performance/serial-parallel.csv}{magenta}{1}{Serial}
+		\end{axis}
+	\end{tikzpicture}
+	\caption{Impact of external library linear set solver on Crank-Nicolson schema.}
+	\label{fig:imapct:crank-nicolson}
+\end{figure}
