@@ -1,5 +1,5 @@
 \section{Serial and parallel algorithms performance} \label{s:results:performance-serial-parallel}
-	Performance of the parallel algorithms can be measured using different definitions and laws. Figures \ref{fig:speedup:crank-nicolson}, \ref{fig:speedup:explicit-upwind} and \ref{fig:speedup:implcit-upwind} show the \gls{speed-up} of parallel algorithms for problem of $10000$ grid points. 
+	Performance of the parallel algorithms can be measured using different definitions and laws. Figures \ref{fig:speedup:crank-nicolson}, \ref{fig:speedup:explicit-upwind} and \ref{fig:speedup:implcit-upwind} show the \gls{speed-up} of parallel algorithms for problem of $10000$ and $1000$ grid points. In overall the lowest \gls{speed-up} is observed for Crank--Nicolson scheme -- nearly $1.1$ for $3$ processors for problem of $10000$ points. In case of $1000$ points it was impossible to get gain additional processors. Every new processor successively prolonged execution time, which can be observed in Figure \ref{fig:speedup:crank-nicolson}. The result is expected because according to \ref{fig:visualization:crank-nicolson} and \gls{computation-to-communication-ratio} only small part of scheme was be parallelized. Even if communication cost was optimized by spreading the grid to processor, the overall impact of quasi--serial part of numerical scheme has huge impact on performance and \gls{speed-up}.
 	\begin{figure}[!htbp]
 		\centering
 		\begin{tikzpicture}[scale=0.7]	 	
@@ -24,7 +24,7 @@
 		\caption{Speed-up of Crank-Nicolson numerical method.}
 		\label{fig:speedup:crank-nicolson}
 	\end{figure}
-	Maximum \gls{speed-up} for Crank-Nicolson schema presented in Figure \ref{fig:speedup:crank-nicolson} is reached for $10$ processors giving $2.52$. Performance of this parallelization if very poor reaching \gls{efficiency} equal to $25.2$. The \gls{speed-up} is bounded very fast, probably due to forward and backward substitution calculated in quasi serial way at the end of each iteration. This scheme also introduces the highest amount of data exchange (Figure \ref{fig:visualization:crank-nicolson}). Adding those facts the result is not surprising.  
+	The trend of \gls{speed-up}s shown in Figure \ref{fig:speedup:explicit-upwind} for $1000$ and $10000$ points is similar. Observation was made that for $1000$ points the maximum value is $1.65$ for $7$ processors. Problem of $10000$ gives \gls{speed-up} of $5.56$ for $32$ processors. According to Figure \ref{fig:visualization:explicit-upwind} we can observe that all the processors work simultaneously, which translates into overlap of the curves for small amount of processors for both sizes of problem.
 	\begin{figure}[!htbp]
 		\centering
 		\begin{tikzpicture}[scale=0.7]	 	
@@ -49,7 +49,7 @@
 		\caption{Speed-up of Explicit Upwind numerical method.}
 		\label{fig:speedup:explicit-upwind}
 	\end{figure}
-	Calculations in explicit upwind scheme are performed simultaneously with very low \gls{computation-to-communication-ratio}. Produced result is the best comparing to the other discussed schemes. Small dispersion (rapid growth) from the linear order can be noticed in Figure \ref{fig:speedup:explicit-upwind} between $44$ and $48$ processor. It is very hard to identify why anomaly occurred, probably it is due to memory hierarchy and caching. Maximum \gls{speed-up} is equal $33.77$ for $52$ processors. The performance for this parallel algorithm is very scalable.
+	Similarly to explicit upwind scheme, the implicit upwind \gls{speed-up} is also close to ideal. The further analysis of Figure \ref{fig:visualization:implicit-upwind} leads to conclusion that for $1000$ points usage of more than $24$ processors gives negative results in terms of execution time. For $10000$ points the limit was not found even $64$ processors this execution time is $11$ times faster than for a serial code, while for $10$ time smaller problem \gls{speed-up} is $2$ times less.
 	\begin{figure}[!htbp]
 		\centering
 		\begin{tikzpicture}[scale=0.7]	 	
@@ -74,6 +74,4 @@
 		\caption{Speed-up of Implicit Upwind numerical method.}
 		\label{fig:speedup:implcit-upwind}
 	\end{figure}
-	Almost classic linear growth of \gls{speed-up} is shown in Figure \ref{fig:speedup:implcit-upwind} reaching $33.14$ for $128$ processors. Due to very long queues further test cannot be performed for this scheme. Comparing to the explicit upwind slope of the \gls{speed-up} line is smaller. Fact that processors have to send a new solution to the next one cause a standby time and is a reason of slow \gls{speed-up} increase. 
-	
-	None of the discussed schemes was close to the ideal \gls{speed-up}, although the largest one is performed by explicit upwind scheme.
+	For all the schemes execution time decreased. The highest \gls{speed-up} observed for implicit upwind scheme. The worst result was given by Crank--Nicolson method giving nearly the same performance as the serial code. Communication cost for mentioned scheme is probably too high, which translates into performance. Summarizing obtained results improved performance, but none of scheme is even close to ideal.
