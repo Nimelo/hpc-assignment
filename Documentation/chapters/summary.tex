@@ -1,1 +1,9 @@
-\chapter{Summary} \label{chp:summary}
+\chapter{Conclusions} \label{chp:summary}
+	Based on obtained results it is clearly visible that parallelization is very useful for \gls{HPC} problems. Increasing number of processor we can get the gain up to the point when cost of the communication exceeds made computations. 
+	
+	Parallelization requires to deep knowledge of the domain and experience in implementation of high performance programs. The very important part of parallelization is to choose the most optimal fragmentation of problem between processors reducing the communication cost as much as possible increasing the parallelism of computations. Analyzing results of Crank--Nicolson scheme we can see that not all of the problems can perform very efficient in parallel. Some of them are easy, but gain is not ideal. 
+	
+	Comparison of \gls{speed-up} for different sizes of grid discussed in Section \ref{s:results:compare-solutions-serial-parallel} leads to conclusion that mindless increasing number of processors does not give better results. Almost every parallel program has a limit, after passing it the performance drastically falls. Parallel programs are useless for small scale problems, because time spent on exchange of information is higher than on calculations, which is very clearly presented in Figure \ref{fig:speedup:crank-nicolson}. The bigger problem is the higher gain can be obtained according to the \glossary{speed-up} ratio. 
+	
+	Summarizing high performance computing is created for big problems, which contain independent parts that can be parallelized. The more of this parts are the bigger is gain. The theoretical 
+	\gls{speed-up} in latency of the execution of a task at fixed workload can be calculated using \emph{Amdahl's law}. Worth of mentioning is a fact that complexity of the parallel programs is very hard to determine because its a function with two variables -- number of processors and size of a problem. Implementation of parallel programs depends on the used framework (i.e. \gls{MPI}) or even internal structure of nodes in \gls{super-computer}, which can be used to optimize the results.
