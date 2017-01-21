@@ -38,10 +38,15 @@ std::vector<double>* ExplicitUpwindParallelSchema::apply(std::vector<double>* pr
 	unsigned int gridSize = previousWave->size();
 	std::vector<double> * currentWave = new std::vector<double>(gridSize);
 
+	double begin = MPIWrapper::getTime();
 	double leftBound = this->getLowerBound(coreId, coresQuantity, previousWave->at(0));
+	this->communicationTime += MPIWrapper::getTime() - begin;
 
 	currentWave->at(0) = previousWave->at(0) - cfl * (previousWave->at(0) - leftBound);
+
+	begin = MPIWrapper::getTime();
 	sendUpperBound(coreId, coresQuantity, previousWave->at(gridSize - 1));
+	this->communicationTime += MPIWrapper::getTime() - begin;
 
 	for (unsigned int i = 1; i < gridSize; i++)
 	{

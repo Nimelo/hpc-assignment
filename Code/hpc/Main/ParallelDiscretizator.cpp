@@ -49,11 +49,16 @@ void ParallelDiscretizator::gatherAndAddSolution(std::vector<double>* mainCoreSo
 		finalSolution[i] = mainCoreSolution->at(i);
 	}
 
+	result->communicationTime += this->parameters->schema->communicationTime;
+
 	for (long i = 1; i < this->coresQuantity; i++)
 	{
 		long previousCoreFragmentation = getFragmentation(i - 1, coresQuantity, this->parameters->meshSize);
 		index += previousCoreFragmentation;
+		double begin = MPIWrapper::getTime();
 		MPIWrapper::receiveDoublesFromCore(i, 1, getFragmentation(i, coresQuantity, this->parameters->meshSize), index);
+		this->parameters->schema->communicationTime += MPIWrapper::receiveSingleDoubleFromCore(i, 2);
+		this->parameters->schema->communicationTime += MPIWrapper::getTime() - begin;
 	}
 
 	std::vector<double> * copy = new std::vector<double>(finalSolution, finalSolution + this->parameters->meshSize);
@@ -115,7 +120,10 @@ DiscretizationResult * ParallelDiscretizator::discretize()
 		}
 		else
 		{
+			double begin = MPIWrapper::getTime();
 			MPIWrapper::sendDoublesToCore(Constants::ROOT_CORE, 1, &(*oldSolution)[0], fragmentation);
+			MPIWrapper::sendDoublesToCore(Constants::ROOT_CORE, 2, &this->parameters->schema->communicationTime, 1);
+			this->parameters->schema->communicationTime += MPIWrapper::getTime() - begin;
 		}
 
 		timeLevels.erase(timeLevels.begin());

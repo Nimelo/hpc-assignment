@@ -74,7 +74,8 @@ int main(int argc, char * argv[])
 			NormSummary * norms = result->getNorms();
 			std::cout << *norms;
 			ns << *norms << std::endl;
-			ns << "Calculated in: " << (end - begin) << std::endl;
+			ns << "Calculated in: " << "," << (end - begin) << std::endl;
+			ns << "Communication time: " << "," << result->communicationTime << std::endl;
 			ns.close();
 			delete result;
 			delete norms;
