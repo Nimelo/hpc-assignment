@@ -28,3 +28,38 @@
 	
 \section{Example configuration file} \label{app:exampleConfigurationFile}
 	\lstinputlisting[caption=Example configuration file, language=C++]{../Code/hpc/Configurations/crank-nicolson-parallel.conf}
+	
+\section{Building guide} 
+	In order to build the program without external libraries user should put all the sources files into folder and execute following command on \gls{astral} terminal:
+	
+	\begin{itemize}
+		\item
+		{
+			Build without external library (without \gls{eigen} files)
+			\begin{itemize}
+				\item module load icc
+				\item module load impi
+				\item \fbox{mpicxx -o hpc-assignment *.cpp *.h}
+			\end{itemize}
+		},
+		\item
+		{
+			Build with \gls{eigen} library
+			\begin{itemize}
+				\item module load icc
+				\item module load impi
+				\item \fbox{mpicxx -I \emph{path_to_eigen_dependencies}-o hpc-assignment-eigen *.cpp *.h}
+			\end{itemize}
+		},
+		\item
+		{
+			Optimized build
+			\begin{itemize}
+				\item module load icc
+				\item module load impi
+				\item \fbox{mpicxx -I -o hpc-assignment-O2 *.cpp *.h -O2}
+			\end{itemize}
+		}
+	\end{itemize}
+	
+

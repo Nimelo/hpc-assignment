@@ -1,0 +1,93 @@
+\section{Ratio between communication and execution time}
+	\begin{figure}[!htbp]
+		\centering
+			\begin{tikzpicture}
+			\pgfplotsset{width=\textwidth}
+			\begin{axis}[
+			ybar,
+			bar width=4pt,
+			xlabel = {\emph{number of processors}},
+			ylabel = {\emph{\%}},
+			%symbolic x coords={5,10,15,20},
+			xticklabels={1,2,3,4,5,6,7,8,9,10,16, 20, 24, 32, 64},
+			xtick=data,%{1,2,3,4,5,6,7,8,9,10,16, 20, 24, 32, 64},b
+			%enlarge x limits={abs=2cm},
+			ymajorgrids=true,
+			xmajorgrids=true,
+			grid style=dashed,
+			legend pos=north west
+			%legend style={at={(0.5,-0.1)},anchor=north,legend cell align=left},
+			%nodes near coords,
+			%every node near coord/.append style={rotate=90, anchor=west},
+			]
+			\addcustomybarplot{others/performance/implicit-upwind-parallel-final.csv}{4}{yellow}{10000}{5};
+			\addcustomybarplot{others/performance/implicit-upwind-parallel-final-O2.csv}{4}{red}{10000 -O2}{5};
+			\addcustomybarplot{others/performance/implicit-upwind-parallel-final-1000-O2.csv}{4}{cyan}{1000 -O2}{5};
+			\addcustomybarplot{others/performance/implicit-upwind-parallel-final-1000.csv}{4}{magenta}{1000}{5};
+			\end{axis}
+			\end{tikzpicture}
+			\caption{Ratio between communication and execution time for implicit upwind scheme.}	
+			\label{fig:ratio:implicit-upwind}
+	\end{figure}
+
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}
+		\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+		ybar,
+		xlabel = {\emph{number of processors}},
+		ylabel = {\emph{\%}},
+		bar width=4pt,
+		%symbolic x coords={5,10,15,20},
+		xticklabels={1,2,3,4,5,6,7,8,9,10,16, 20, 32, 40, 44, 48, 52, 60, 62, 63, 64},
+		xtick=data,%{1,2,3,4,5,6,7,8,9,10,16, 20, 24, 32, 64},
+		%enlarge x limits={abs=2cm},
+		ymajorgrids=true,
+		xmajorgrids=true,
+		grid style=dashed,
+		legend pos=north west
+		%legend style={at={(0.5,-0.1)},anchor=north,legend cell align=left},
+		%nodes near coords,
+		%every node near coord/.append style={rotate=90, anchor=west},
+		]
+		\addcustomybarplot{others/performance/explicit-upwind-parallel-final.csv}{4}{yellow}{10000}{5};
+		\addcustomybarplot{others/performance/explicit-upwind-parallel-final-O2.csv}{4}{red}{10000 -O2}{5};
+		\addcustomybarplot{others/performance/explicit-upwind-parallel-final-1000-O2.csv}{4}{cyan}{1000 -O2}{5};
+		\addcustomybarplot{others/performance/explicit-upwind-parallel-final-1000.csv}{4}{magenta}{1000}{5};
+		\end{axis}
+		\end{tikzpicture}
+		\caption{Ratio between communication and execution time for explicit upwind scheme.}
+		\label{fig:ratio:explicit-upwind}
+	\end{figure}
+
+	\begin{figure}[!htbp]
+		\centering
+		\begin{tikzpicture}
+		\pgfplotsset{width=\textwidth}
+		\begin{axis}[
+		ybar,
+		bar width=4pt,
+		xlabel = {\emph{number of processors}},
+		ylabel = {\emph{\%}},
+		%symbolic x coords={5,10,15,20},
+		xticklabels={1,2,3,4,5,6,7,8,9,10,16, 20, 32, 64},
+		xtick=data,%{1,2,3,4,5,6,7,8,9,10,16, 20, 24, 32, 64},
+		%enlarge x limits={abs=2cm},
+		ymajorgrids=true,
+		xmajorgrids=true,
+		grid style=dashed,
+		legend pos=north west
+		%legend style={at={(0.5,-0.1)},anchor=north,legend cell align=left},
+		%nodes near coords,
+		%every node near coord/.append style={rotate=90, anchor=west},
+		]
+		\addcustomybarplot{others/performance/crank-nicolson-parallel-final.csv}{4}{yellow}{10000}{5};
+		\addcustomybarplot{others/performance/crank-nicolson-parallel-final-O2.csv}{4}{red}{10000 -O2}{5};
+		\addcustomybarplot{others/performance/crank-nicolson-parallel-final-1000-O2.csv}{4}{cyan}{1000 -O2}{5};
+		\addcustomybarplot{others/performance/crank-nicolson-parallel-final-1000.csv}{4}{magenta}{1000}{5};
+		\end{axis}
+		\end{tikzpicture}
+		\caption{Ratio between communication and execution time for Crank--Nicolson scheme.}
+		\label{fig:ratio:crank-nicolson}	
+	\end{figure}

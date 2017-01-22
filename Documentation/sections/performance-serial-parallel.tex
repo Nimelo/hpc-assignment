@@ -1,5 +1,8 @@
 \section{Serial and parallel algorithms performance} \label{s:results:performance-serial-parallel}
-	Performance of the parallel algorithms can be measured using different definitions and laws. Figures \ref{fig:speedup:crank-nicolson}, \ref{fig:speedup:explicit-upwind} and \ref{fig:speedup:implcit-upwind} show the \gls{speed-up} of parallel algorithms for problem of $10000$ and $1000$ grid points. In overall the lowest \gls{speed-up} is observed for Crank--Nicolson scheme -- nearly $1.1$ for $3$ processors for problem of $10000$ points. In case of $1000$ points it was impossible to get gain additional processors. Every new processor successively prolonged execution time, which can be observed in Figure \ref{fig:speedup:crank-nicolson}. The result is expected because according to \ref{fig:visualization:crank-nicolson} and \gls{computation-to-communication-ratio} only small part of scheme was be parallelized. Even if communication cost was optimized by spreading the grid to processor, the overall impact of quasi--serial part of numerical scheme has huge impact on performance and \gls{speed-up}.
+	Performance of the parallel algorithms can be measured using different definitions and laws. Figures \ref{fig:speedup:crank-nicolson}, \ref{fig:speedup:explicit-upwind} and \ref{fig:speedup:implcit-upwind} show the \gls{speed-up} of parallel algorithms for problem of $10000$ and $1000$ grid points. 		
+	During analysis and trials observed that the \gls{speed-up} is lower for more optimized code. This happens because the overall time of computation is lower, while communication and idle times stay the same. On all figures in this section optimized code is mark by \emph{-O2} flag. 
+	
+	In overall the lowest \gls{speed-up} is observed for Crank--Nicolson scheme -- nearly $1.1$ for $3$ processors for problem of $10000$ points. In case of $1000$ points it was impossible to get gain additional processors. Every new processor successively prolonged execution time, which can be observed in Figure \ref{fig:speedup:crank-nicolson}. 
 	\begin{figure}[!htbp]
 		\centering
 		\begin{tikzpicture}[scale=0.7]	 	
@@ -26,6 +29,22 @@
 		\caption{Speed-up of Crank-Nicolson numerical method.}
 		\label{fig:speedup:crank-nicolson}
 	\end{figure}
+	The result is expected because according to \ref{fig:visualization:crank-nicolson} and \gls{computation-to-communication-ratio} only small part of scheme was be parallelized. Even if communication cost was optimized by spreading the grid to processor, the overall impact of quasi--serial part of numerical scheme has huge impact on performance and \gls{speed-up}.
+	Amdahl's law \cite{bib:amdahl} can be formulated the following way:
+	\begin{equation}
+		S_{latency}(s) = \frac{1}{(1-p) + \frac{p}{s}}
+	\end{equation}
+	where 
+	\begin{itemize}
+		\item $S_{latency}$ is the theoretical speedup of the execution of the whole task;
+		\item $s$ is the speedup of the part of the task that benefits from improved system resources;
+		\item $p$ is the proportion of execution time that the part benefiting from impoved resources originally occupied. 
+	\end{itemize}
+	For Crank--Nicolson introduced before theoretical speedup for $5$ processors is equal to:
+	\begin{equation}
+		S_{latency}(s) = \frac{1}{(1-0.3) + \frac{0.3}{5}} = 1.315789474
+	\end{equation}
+	which is really close to received value.
 	The trend of \gls{speed-up}s shown in Figure \ref{fig:speedup:explicit-upwind} for $1000$ and $10000$ points is similar. Observation was made that for $1000$ points the maximum value is $1.65$ for $7$ processors. Problem of $10000$ gives \gls{speed-up} of $5.56$ for $32$ processors. According to Figure \ref{fig:visualization:explicit-upwind} we can observe that all the processors work simultaneously, which translates into overlap of the curves for small amount of processors for both sizes of problem.
 	\begin{figure}[!htbp]
 		\centering

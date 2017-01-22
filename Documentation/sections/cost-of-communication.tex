@@ -16,4 +16,31 @@
 		\frac{3n}{2p + 2(p-1) + (p-1)} = \frac{3n}{5p-3}
 	\end{equation}
 	
-	Comparing calculated ratios we can observe that cost of communication is the greatest for Crank-Nicolson schema. Ratio between number of calculations and total size of messages send by processors in terms of upwind schemes is the same, but for implicit scheme we will observe a standby time (Figure \ref{fig::implicit-upwind}).
+	Comparing calculated ratios we can observe that cost of communication is the greatest for Crank-Nicolson schema. Ratio between number of calculations and total size of messages send by processors in terms of upwind schemes is the same, but for implicit scheme we will observe idling (Figure \ref{fig::implicit-upwind}). Ratio between communication and 
+	
+	%\begin{figure}[!htbp]
+	%	\centering
+	%	\begin{tikzpicture}[scale=0.7]	 	
+	%	\pgfplotsset{width=\textwidth}
+	%	\begin{axis}[
+	%	xlabel = {\emph{number of processors}},
+	%	ylabel = {\emph{communication time}},
+	%	%ymin = -1, ymax = 1,
+	%	xmin = 0,% xmax = 32,
+	%	%minor y tick num = 1,
+	%	ymajorgrids=true,
+	%	xmajorgrids=true,
+	%	grid style=dashed,
+	%	legend pos=south east
+	%	]
+		%\addcustomplot{others/performance/crank-nicolson-parallel-final.csv}{red}{3}{10000 points}
+		%\addcustomplot{others/performance/crank-nicolson-parallel-final-1000.csv}{orange}{4}{1000 points}
+	%	\addcustomplot{others/performance/crank-nicolson-parallel-final-O2.csv}{purple}{4}{Crank--Nicolson}
+	%	\addcustomplot{others/performance/implicit-upwind-parallel-final-O2.csv}{red}{4}{Implicit upwind}
+	%	\addcustomplot{others/performance/explicit-upwind-parallel-final-O2.csv}{green}{4}{Explicit upwind}
+	%	%\addcustomplot{others/performance/crank-nicolson-parallel-final-1000-O2.csv}{gray}{4}{1000 points -O2}
+	%	\end{axis}
+	%	\end{tikzpicture}
+	%	\caption{Estimated ratio of communication to execution time for parallel solutions.}
+	%	\label{fig:estimate}
+	%\end{figure}

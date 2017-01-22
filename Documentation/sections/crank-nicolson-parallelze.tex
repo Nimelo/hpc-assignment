@@ -57,7 +57,7 @@
 		\caption{Communication between processors during forward substitution.}
 		\label{fig:communication:forward-substitution}
 	\end{figure}
-	It means that there is no way to speedup those stages using parallel approach. The only way to improve performance of Thomas algorithm in terms of Crank-Nicolson scheme is to make use of a fact that tridiagonal dominant matrix will have the same values of element for every iterations -- it can be calculated at the beginning only once during initialization of dependent variables shown in Figure \ref{fig:schematicOfFDM}.
+	The way to improve performance of Thomas algorithm in terms of Crank-Nicolson scheme is to make use of a fact that tridiagonal dominant matrix will have the same values of element for every iterations -- it can be calculated at the beginning only once during initialization of dependent variables shown in Figure \ref{fig:schematicOfFDM}.
 	In a serial way backward and forward substitutions requires an entire grid and dependent LU decomposition matrices. Using this approach main processor would need to gather all local grids from the processors, which later would be used in a serial algorithm. Moreover after this it would required to scatter new solution to processors, which highly increases the load of communication without increase of efficiency. Due to that remark it would be better to make use of a serial Thomas algorithm in a way that communication between processors stays as low as possible. Mentioned in Section \ref{s:general-approach:devise-a-way-to-parallelize} spreading grid across all processors is a good idea.
 	\begin{figure}[!htbp]
 		\centering
