@@ -245,9 +245,6 @@
     <ClCompile Include="Constants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="EigenSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EigenCrankNicolsonDiscretizator.cpp">
       <Filter>Source Files\Discretizators</Filter>
     </ClCompile>

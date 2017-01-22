@@ -202,7 +202,6 @@
     <ClCompile Include="Discretizator.cpp" />
     <ClCompile Include="DiscretizatorsFactory.cpp" />
     <ClCompile Include="EigenCrankNicolsonDiscretizator.cpp" />
-    <ClCompile Include="EigenSource.cpp" />
     <ClCompile Include="explicit-upwind.cpp" />
     <ClCompile Include="ExplicitUpwindParallelSchema.cpp" />
     <ClCompile Include="ImplicitUpwindParallelSchema.cpp" />

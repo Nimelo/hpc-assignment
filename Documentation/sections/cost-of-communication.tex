@@ -1,46 +1,105 @@
-\section{Cost of communication} \label{s:results:cost-of-communication}
+\section{Communication overhead cost} \label{s:results:cost-of-communication}
 	A process that performs a few calculations and then sends a single short message may have the same \gls{computation-to-communication-ratio} as a process that performs millions of calculations and then sends many large messages. For each of discussed schemes \gls{computation-to-communication-ratio} is determined based on \gls{stencil} and analysis described in Section \ref{s:general-approach:analysis-of-the-schemes} and \ref{s:general-approach:devise-a-way-to-parallelize}.
 	
 	Basing on Figure \ref{fig:communication:explicit-upwind} total size of messages that are send in a single time step is equal to $p-1$, where $p$ is total quantity of processors used in calculations. For single time step there is need to compute $n$ points, so \gls{computation-to-communication-ratio} for this scheme is equal to
-	\begin{equation}
+	\begin{equation}  \label{eq:ratio:eu}
 		\frac{n}{p-1}
 	\end{equation}
 		
 	Implicit upwind scheme also requires to calculate only $n$ values, because of computed equation \eqref{eq:implicitSubstitution}. Total amount of messages send between processors in each time step is the same as in case of explicit upwind scheme and equal to $p-1$ basing on Figure \ref{fig:visualization:implicit-upwind}. Thus ratio in this case is equal to
-	\begin{equation}
+	\begin{equation}  \label{eq:ratio:iu}
 		\frac{n}{p-1}
 	\end{equation}
 	
 	For Crank-Nicolson scheme calculations are more complex. As mentioned in Section \ref{s:general-approach:crank-nicolson-parallel-algorithm} applying formulations for new solution requires computation of $n$ points in the grid and $2p$ messages. In next step forward substitution requires to calculate another $n$ values exchanging $2(p-1)$ messages. Backward substitution requires only $p-1$ messages and for $n$ points. The overall \gls{computation-to-communication-ratio} for this scheme is equal to
-	\begin{equation}
+	\begin{equation} \label{eq:ratio:cn}
 		\frac{3n}{2p + 2(p-1) + (p-1)} = \frac{3n}{5p-3}
 	\end{equation}
 	
-	Comparing calculated ratios we can observe that cost of communication is the greatest for Crank-Nicolson schema. Ratio between number of calculations and total size of messages send by processors in terms of upwind schemes is the same, but for implicit scheme we will observe idling (Figure \ref{fig::implicit-upwind}). Ratio between communication and 
-	
-	%\begin{figure}[!htbp]
-	%	\centering
-	%	\begin{tikzpicture}[scale=0.7]	 	
-	%	\pgfplotsset{width=\textwidth}
-	%	\begin{axis}[
-	%	xlabel = {\emph{number of processors}},
-	%	ylabel = {\emph{communication time}},
-	%	%ymin = -1, ymax = 1,
-	%	xmin = 0,% xmax = 32,
-	%	%minor y tick num = 1,
-	%	ymajorgrids=true,
-	%	xmajorgrids=true,
-	%	grid style=dashed,
-	%	legend pos=south east
-	%	]
-		%\addcustomplot{others/performance/crank-nicolson-parallel-final.csv}{red}{3}{10000 points}
-		%\addcustomplot{others/performance/crank-nicolson-parallel-final-1000.csv}{orange}{4}{1000 points}
-	%	\addcustomplot{others/performance/crank-nicolson-parallel-final-O2.csv}{purple}{4}{Crank--Nicolson}
-	%	\addcustomplot{others/performance/implicit-upwind-parallel-final-O2.csv}{red}{4}{Implicit upwind}
-	%	\addcustomplot{others/performance/explicit-upwind-parallel-final-O2.csv}{green}{4}{Explicit upwind}
-	%	%\addcustomplot{others/performance/crank-nicolson-parallel-final-1000-O2.csv}{gray}{4}{1000 points -O2}
-	%	\end{axis}
-	%	\end{tikzpicture}
-	%	\caption{Estimated ratio of communication to execution time for parallel solutions.}
-	%	\label{fig:estimate}
-	%\end{figure}
+	Comparing calculated ratios we can observe that cost of communication is the greatest for Crank-Nicolson schema. Ratio between number of calculations and total size of messages send by processors in terms of upwind schemes is the same, but for implicit scheme we will observe idling (Figure \ref{fig:visualization:implicit-upwind}). Those theoretical values were compared with results of discretization using various number of processors. Figure \ref{fig:ratio} presents communication time calculated for single iteration of discussed schemes. Communication time tends to grow with number of processors. Implicit and explicit upwind schemes have comparable values respecting to the magnitude of numbers. Result for Crank-Nicolson scheme shown in Figure \ref{fig:ratio:crank-nicolson} has hundred times bigger value than other schemes. Practical values as expected are comparable to the equations derived before -- \eqref{eq:ratio:eu}, \eqref{eq:ratio:iu}, \eqref{eq:ratio:cn}.
+	\begin{center}
+		
+	\begin{figure}[!htbp]
+		%\centering
+		\begin{subfigure}[b]{0.3\textwidth}
+			\begin{tikzpicture}
+				\pgfplotsset{width=\textwidth}
+				\begin{axis}[
+					ybar,
+					bar width=4pt,
+					xlabel = {\emph{number of processors}},
+					ylabel = {\emph{communication time}},
+					%symbolic x coords={5,10,15,20},
+					xticklabels={2,4,8,16,32},
+					xtick=data,%{1,2,3,4,5,6,7,8,9,10,16, 20, 24, 32, 64},b
+					%enlarge x limits={abs=2cm},
+					ymajorgrids=true,
+					xmajorgrids=true,
+					grid style=dashed,
+					%legend pos=north west
+					legend style={at={(0.5,-0.1)},anchor=north,legend cell align=left},
+					%nodes near coords,
+					%every node near coord/.append style={rotate=90, anchor=west},
+					]
+					\addcustomybarplot{others/performance/communication-final.csv}{7}{cyan}{Implicit upwind}{0};
+				\end{axis}
+			\end{tikzpicture}
+			\caption{Implicit upwind scheme biased by idling time.}	
+			\label{fig:ratio:implicit-upwind}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+			\begin{tikzpicture}
+			\pgfplotsset{width=\textwidth}
+			\begin{axis}[
+			ybar,
+			bar width=4pt,
+			xlabel = {\emph{number of processors}},
+			ylabel = {\emph{communication time}},
+			%symbolic x coords={5,10,15,20},
+			xticklabels={2,4,8,16,32},
+			xtick=data,%{1,2,3,4,5,6,7,8,9,10,16, 20, 24, 32, 64},b
+			%enlarge x limits={abs=2cm},
+			ymajorgrids=true,
+			xmajorgrids=true,
+			grid style=dashed,
+			%legend pos=north west
+			legend style={at={(0.5,-0.1)},anchor=north,legend cell align=left},
+			%nodes near coords,
+			%every node near coord/.append style={rotate=90, anchor=west},
+			]
+			\addcustomybarplot{others/performance/communication-final.csv}{6}{red}{Explicit upwind}{0};
+			\end{axis}
+			\end{tikzpicture}
+			\caption{Explicit upwind scheme.}	
+			\label{fig:ratio:explicit-upwind}
+		\end{subfigure}
+		\begin{subfigure}[b]{0.3\textwidth}
+			\begin{tikzpicture}
+			\pgfplotsset{width=\textwidth}
+			\begin{axis}[
+			ybar,
+			bar width=4pt,
+			xlabel = {\emph{number of processors}},
+			ylabel = {\emph{communication time}},
+			%symbolic x coords={5,10,15,20},
+			xticklabels={2,4,8,16,32},
+			xtick=data,%{1,2,3,4,5,6,7,8,9,10,16, 20, 24, 32, 64},b
+			%enlarge x limits={abs=2cm},
+			ymajorgrids=true,
+			xmajorgrids=true,
+			grid style=dashed,
+			%legend pos=north west
+			%legend style={at={(0.5,-0.1)},anchor=north,legend cell align=left},
+			%nodes near coords,
+			%every node near coord/.append style={rotate=90, anchor=west},
+			]
+			\addcustomybarplot{others/performance/communication-final.csv}{5}{yellow}{Crank-Nicolson}{0};
+			\end{axis}
+			\end{tikzpicture}
+			\caption{Crank-Nicolson scheme.}	
+			\label{fig:ratio:crank-nicolson}
+		\end{subfigure}
+		\caption{Communication time per iteration for numerical schemes.}
+		\label{fig:ratio}
+	\end{figure}
+\end{center}

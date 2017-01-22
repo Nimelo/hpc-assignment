@@ -12,6 +12,7 @@ DiscretizationResult::DiscretizationResult(double lowerBound, double upperBound,
 	: lowerBound(lowerBound), upperBound(upperBound), deltaX(deltaX)
 {
 	this->summaries = new WavesSummary(lowerBound, upperBound, deltaX);
+	this->communicationTime = 0.0;
 }
 
 

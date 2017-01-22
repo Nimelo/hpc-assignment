@@ -46,6 +46,7 @@ private:
 	WavesSummary * summaries;
 
 public:
+	double communicationTime;
 	/**
 	 * Overloaded constructor for explicitly given parameters.
 	 * @param lowerBound Lower bound.
