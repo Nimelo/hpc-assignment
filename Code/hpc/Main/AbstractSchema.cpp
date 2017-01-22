@@ -9,7 +9,6 @@ AbstractSchema::AbstractSchema(long coreId, long coresQuantity, unsigned int num
 	: MPIObject(coreId, coresQuantity), accelertaion(a), deltaT(dt), deltaX(dx), numberOfPoints(numberOfPoints)
 {
 	cfl = accelertaion * deltaT / deltaX;
-	communicationTime = 0;
 }
 
  AbstractSchema::~AbstractSchema()

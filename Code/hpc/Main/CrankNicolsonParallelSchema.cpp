@@ -12,9 +12,7 @@ void CrankNicolsonParallelSchema::setUpLUDecomposition(double a, double b, doubl
 	int N = this->numberOfPoints;
 
 	/* LU Decomposition */
-	double begin = MPIWrapper::getTime();
 	d[0] = coreId == Constants::ROOT_CORE ? a : (a - MPIWrapper::receiveSingleDoubleFromCore(coreId - 1, TAG_D) * c);
-	this->communicationTime += MPIWrapper::getTime() - begin;
 
 	u[0] = c;
 	for (int i = 0; i < N - 1; i++) {
@@ -26,9 +24,7 @@ void CrankNicolsonParallelSchema::setUpLUDecomposition(double a, double b, doubl
 
 	if (coreId != coresQuantity - 1)
 	{
-		begin = MPIWrapper::getTime();
 		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_D, &l[N - 1], 1);
-		this->communicationTime += MPIWrapper::getTime() - begin;
 	}
 }
 
@@ -49,10 +45,8 @@ std::vector<double>* CrankNicolsonParallelSchema::apply(std::vector<double>* pre
 	long sendLeftCoreId = (coreId - 1 + coresQuantity) % coresQuantity;
 	long recvLeftCoreId = (coreId + 1) % coresQuantity;
 
-	double begin = MPIWrapper::getTime();
 	MPIWrapper::sendRecvDoubles(sendRightCoreId, 1, &previousWave->at(n - 1), TAG_RIGHT, recvRightCoreId, 1, &leftBound, TAG_RIGHT);
 	MPIWrapper::sendRecvDoubles(sendLeftCoreId, 1, &previousWave->at(0), TAG_LEFT, recvLeftCoreId, 1, &rightBound, TAG_LEFT);
-	this->communicationTime += MPIWrapper::getTime() - begin;
 
 	for (unsigned int i = 1; i < previousWave->size() - 1; i++)
 	{
@@ -86,10 +80,8 @@ double * CrankNicolsonParallelSchema::ForwardSubstitution(double *q)
 	}
 	else
 	{
-		double begin = MPIWrapper::getTime();
 		double leftY = MPIWrapper::receiveSingleDoubleFromCore(coreId - 1, TAG_Y);
 		double leftL = MPIWrapper::receiveSingleDoubleFromCore(coreId - 1, TAG_L);
-		this->communicationTime += MPIWrapper::getTime() - begin;
 		y[0] = q[0] - leftL * leftY;
 	}
 
@@ -98,10 +90,8 @@ double * CrankNicolsonParallelSchema::ForwardSubstitution(double *q)
 
 	if (coreId != coresQuantity - 1)
 	{
-		double begin = MPIWrapper::getTime();
 		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_Y, &y[N - 1], 1);
 		MPIWrapper::sendDoublesToCore(coreId + 1, TAG_L, &l[N - 1], 1);
-		this->communicationTime += MPIWrapper::getTime() - begin;
 	}
 
 	return y;
@@ -120,9 +110,7 @@ std::vector<double>* CrankNicolsonParallelSchema::BackwardSubstitution(double * 
 	}
 	else
 	{
-		double begin = MPIWrapper::getTime();
 		double rightX = MPIWrapper::receiveSingleDoubleFromCore(coreId + 1, TAG_Z);
-		this->communicationTime += MPIWrapper::getTime() - begin;
 		x[N - 1] = (y[N - 1] - u[N - 1] * rightX) / d[N - 1];
 	}
 
@@ -131,9 +119,7 @@ std::vector<double>* CrankNicolsonParallelSchema::BackwardSubstitution(double * 
 
 	if (coreId != 0)
 	{
-		double begin = MPIWrapper::getTime();
 		MPIWrapper::sendDoublesToCore(coreId - 1, TAG_Z, &x[0], 1);
-		this->communicationTime += MPIWrapper::getTime() - begin;
 	}
 
 	return result;

@@ -81,8 +81,6 @@ public:
 	 * @return Adjusted wave.
 	 */
 	virtual std::vector<double> * postApplyAction(std::vector<double> * previousWave, double t);
-
-	double communicationTime;
 };
 
 #endif

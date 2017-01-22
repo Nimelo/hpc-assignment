@@ -75,7 +75,6 @@ int main(int argc, char * argv[])
 			std::cout << *norms;
 			ns << *norms << std::endl;
 			ns << "Calculated in: " << "," << (end - begin) << std::endl;
-			ns << "Communication time: " << "," << result->communicationTime << std::endl;
 			ns.close();
 			delete result;
 			delete norms;
